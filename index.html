@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>DANYA PROAI — Живое обучение ИИ-контенту</title>
+<meta name="description" content="Живое обучение созданию ИИ-контента в группе из 10 человек. 3 недели живого обучения у режиссёра ИИ-контента, чьи работы выходят в эфире ТАСС." />
+<meta property="og:title" content="DANYA PROAI — новая кисть художника" />
+<meta property="og:description" content="Живое обучение ИИ-контенту в группе из 10 человек. 3 недели + месяц поддержки." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800;900&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   DANYA PROAI — Design System
+   neo-origami × sumi-e × renaissance fresco
+   ============================================================ */
+@font-face{font-family:'Hamilton Signature';src:url('./assets/hamilton.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+:root{
+  /* base palette */
+  --ink:#0A0A0A;
+  --paper:#F4F1EA;
+  --accent:#C8FF3E;
+
+  /* derived */
+  --ink-soft:#141414;
+  --ink-2:#1C1C1A;
+  --paper-soft:#FBFAF5;
+  --paper-warm:#EFEADD;
+  --line:#E2DCCB;
+  --line-dark:rgba(255,255,255,.10);
+  --muted:#6A675E;
+  --dim:#9A968B;
+  --muted-dark:#A8A496;
+  --dim-dark:#6F6C62;
+
+  --accent-hover:#D7FF63;
+  --accent-deep:#A6E000;
+  --accent-glow:rgba(200,255,62,.22);
+  --danger:#FF5247;
+
+  /* type */
+  --f-display:'Unbounded',sans-serif;
+  --f-body:'Manrope',sans-serif;
+  --f-mono:'JetBrains Mono',monospace;
+  --f-cursive:'Hamilton Signature', cursive;        /* рукописная пропись — заглавные буквицы заголовков */
+
+  --t-hero:clamp(1.6rem,5vw,3.6rem);
+  --t-h1:clamp(1.9rem,3.7vw,3.5rem);
+  --t-h2:clamp(1.6rem,3vw,2.6rem);
+  --t-h3:clamp(1.3rem,2.1vw,1.75rem);
+  --t-body:clamp(1rem,1.05vw,1.18rem);
+  --t-lead:clamp(1.1rem,1.5vw,1.4rem);
+  --t-small:.875rem;
+  --t-mono:.78rem;
+
+  /* layout */
+  --maxw:1320px;
+  --pad:clamp(20px,5vw,80px);
+  --sec-y:clamp(72px,11vw,160px);
+
+  --r-sm:10px;
+  --r-md:18px;
+  --r-lg:28px;
+  --r-xl:40px;
+  --pill:999px;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-in-out:cubic-bezier(.65,.05,.36,1);
+
+  --nav-h:76px;
+}
+
+/* ---------- reset ---------- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+body{
+  font-family:var(--f-body);
+  font-size:var(--t-body);
+  line-height:1.62;
+  color:var(--ink);
+  background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+ul{list-style:none}
+::selection{background:var(--accent);color:var(--ink)}
+
+/* paper texture */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* ---------- layout helpers ---------- */
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad);position:relative;z-index:2}
+section{position:relative}
+.sec{padding-block:var(--sec-y)}
+.sec--dark{background:var(--ink);color:var(--paper)}
+.sec--paper-soft{background:var(--paper-soft)}
+.sec--warm{background:var(--paper-warm)}
+
+/* eyebrow */
+.eyebrow{
+  font-family:var(--f-mono);font-size:var(--t-mono);font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  display:inline-flex;align-items:center;gap:.7em;margin-bottom:1.4rem;
+}
+.sec--dark .eyebrow{color:var(--accent)}
+.eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.6}
+.eyebrow .idx{color:var(--accent);font-weight:500}
+.sec--dark .eyebrow .idx{color:var(--paper)}
+
+h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.02;letter-spacing:-.02em}
+.h-hero{font-size:var(--t-hero);font-weight:900;line-height:.98}
+.h1{font-size:var(--t-h1)}
+.h2{font-size:var(--t-h2)}
+.h3{font-size:var(--t-h3);font-weight:700;letter-spacing:-.01em}
+.lead{font-size:var(--t-lead);line-height:1.5;color:var(--muted);max-width:46ch}
+.sec--dark .lead{color:var(--muted-dark)}
+.mark{background:linear-gradient(180deg,transparent 58%,var(--accent) 58%);padding:0 .06em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+/* акцентные слова — обычный шрифт заголовков, акцент ТОЛЬКО цветом */
+.accent-text{color:var(--accent-deep)}
+.sec--dark .accent-text{color:var(--accent)}
+/* ПРОПИСНЫЕ ЗАГЛАВНЫЕ БУКВЫ ЗАГОЛОВКОВ СЕКЦИЙ — рукописная буквица (Hamilton Signature),
+   цвет = как у текста заголовка, крупнее основного кегля */
+.sec h2:not(.no-cap){line-height:1.06}   /* запас под приподнятую буквицу */
+.sec h2:not(.no-cap)::first-letter,
+.sec h2:not(.no-cap) .cap-letter{
+  font-family:var(--f-cursive);font-weight:400;font-style:normal;
+  font-size:1.16em;line-height:1;vertical-align:.13em;padding-right:.13em}
+/* буквица в начале лид-абзаца (::first-letter — фолбэк; .cap-letter — после пословного разбиения) */
+.dropcap::first-letter,.dropcap .cap-letter{font-family:var(--f-display);font-weight:700;font-style:normal;
+  font-size:1.5em;line-height:1;color:var(--ink);padding-right:.03em}
+.sec--dark .dropcap::first-letter,.sec--dark .dropcap .cap-letter{color:var(--paper)}
+/* eyebrow: линия прочерчивается при появлении (только у data-reveal-меток) */
+.eyebrow[data-reveal]::before{transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease) .12s}
+.eyebrow[data-reveal].in::before{transform:scaleX(1)}
+/* акцентные слова: хайлайтер-заливка (цвет чуть тусклее букв) прокрашивается с задержкой */
+.accent-text{
+  background-image:linear-gradient(color-mix(in srgb, currentColor 26%, transparent),color-mix(in srgb, currentColor 26%, transparent));
+  background-repeat:no-repeat;background-position:0 76%;background-size:0% .86em;
+  transition:background-size .55s var(--ease) .55s}
+.txt-in .accent-text{background-size:100% .86em}
+
+/* ---------- buttons ---------- */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:.6em;
+  font-family:var(--f-display);font-weight:700;font-size:1.02rem;letter-spacing:-.01em;
+  padding:1.15rem 2.1rem;border-radius:var(--pill);
+  transition:transform .4s var(--ease),background .4s var(--ease),color .4s var(--ease),box-shadow .4s var(--ease);
+  will-change:transform;white-space:nowrap;
+}
+.btn .arr{transition:transform .4s var(--ease)}
+.btn:hover .arr{transform:translateX(5px)}
+.btn--primary{background:var(--ink);color:var(--accent);box-shadow:0 6px 30px var(--accent-glow)}
+.btn--primary:hover{background:var(--accent);color:var(--ink);box-shadow:0 14px 44px var(--accent-glow)}
+.sec--dark .btn--primary{background:var(--accent);color:var(--ink)}
+.sec--dark .btn--primary:hover{background:var(--accent-hover);box-shadow:0 14px 50px var(--accent-glow)}
+.btn--ghost{border:1.5px solid currentColor;color:var(--ink);padding:1rem 1.8rem}
+.btn--ghost:hover{background:var(--ink);color:var(--paper)}
+.sec--dark .btn--ghost{color:var(--paper)}
+.sec--dark .btn--ghost:hover{background:var(--paper);color:var(--ink)}
+.btn--lg{font-size:1.15rem;padding:1.3rem 2.6rem}
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+.cursor{position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--ink);
+  transform:translate(-50%,-50%);pointer-events:none;z-index:9999;mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:42px;height:42px;border:1.5px solid var(--ink);border-radius:50%;
+  transform:translate(-50%,-50%);pointer-events:none;z-index:9998;mix-blend-mode:difference;
+  transition:width .35s var(--ease),height .35s var(--ease),opacity .3s,background .3s}
+.cursor,.cursor-ring{background-color:#fff}
+.cursor-ring.hover{width:64px;height:64px;background:rgba(255,255,255,.08)}
+@media (hover:none),(max-width:900px){.cursor,.cursor-ring{display:none}}
+
+/* scroll progress */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;transform:scaleX(0);transform-origin:0 50%;
+  background:var(--accent);z-index:1200}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{position:fixed;top:0;left:0;width:100%;height:var(--nav-h);z-index:1000;
+  display:flex;align-items:center;transition:transform .5s var(--ease),background .4s,backdrop-filter .4s,border-color .4s;
+  border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(244,241,234,.78);backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);border-bottom-color:var(--line)}
+.nav.hide{transform:translateY(-100%)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+.brand{font-family:var(--f-display);font-weight:800;font-size:1.18rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.55rem}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-glow)}
+.brand b{font-weight:900}
+.brand .pro{color:var(--muted);font-weight:600}
+.nav-links{display:flex;align-items:center;gap:2.2rem}
+.nav-links a{font-size:.92rem;font-weight:600;color:var(--ink);position:relative;padding:.3rem 0}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--accent);transition:width .35s var(--ease)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{display:inline-flex}
+.nav-right{display:flex;align-items:center;gap:1.6rem}
+.burger{display:none;width:46px;height:46px;border-radius:var(--pill);border:1.5px solid var(--ink);
+  align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.burger span{width:18px;height:2px;background:var(--ink);transition:transform .3s var(--ease),opacity .3s}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* mobile menu */
+.menu{position:fixed;inset:0;z-index:999;background:var(--ink);color:var(--paper);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:calc(var(--nav-h) + 1.6rem) var(--pad) calc(var(--pad) + env(safe-area-inset-bottom,0px));
+  clip-path:inset(0 0 100% 0);transition:clip-path .7s var(--ease);pointer-events:none}
+.menu.open{clip-path:inset(0 0 0 0);pointer-events:auto}
+.menu a{font-family:var(--f-display);font-weight:700;font-size:clamp(2rem,9vw,3.6rem);
+  padding:.35rem 0;display:flex;align-items:baseline;gap:1rem;opacity:0;transform:translateY(24px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.menu.open a{opacity:1;transform:none}
+.menu a span{font-family:var(--f-mono);font-size:.85rem;color:var(--accent);font-weight:400}
+.menu .m-foot{margin-top:auto;padding-top:2rem;font-family:var(--f-mono);font-size:.8rem;color:var(--dim-dark);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{position:relative;background:#0a0a0a;min-height:100svh;overflow:hidden}
+/* сцена — весь экран; масштабируется для пост-зума в лица (origin = лица) */
+.hero-scene{position:absolute;inset:0;overflow:hidden;background:#0a0a0a;z-index:1;
+  transform-origin:50% 34%;will-change:transform}
+/* ПОДЛОЖКА на весь экран */
+.reveal-img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center 36%;z-index:0}
+/* ПЕРЕДНИЙ слой на весь экран: паперные поля + фреска 21:9; прогорает целиком */
+.hero-front{position:absolute;inset:0;z-index:2;background:var(--paper)}
+/* фреска 21:9 по центру (рамка, за которую выходит прогорание) */
+.fresco,.fresco-ui{position:absolute;left:0;width:100%;top:50%;transform:translateY(-50%);aspect-ratio:21/9}
+.fresco{overflow:hidden;background:#14233b}
+.fresco::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,rgba(18,30,52,.5) 0%,rgba(18,30,52,.1) 24%,transparent 48%,transparent 80%,rgba(18,30,52,.28) 100%)}
+.sky{position:absolute;top:-8%;left:-8%;width:116%;height:116%;max-width:none;object-fit:cover;z-index:0;will-change:transform;
+  transform:translate(var(--sx,0px),var(--sy,0px))}
+/* ВИДОИСКАТЕЛЬ-ПРИЦЕЛ — направляющие сходятся к центру (HUD кабины пилота), деликатно */
+.viewfinder{position:absolute;inset:0;z-index:5;pointer-events:none;color:rgba(255,255,255,.5);
+  opacity:.4;transform:translate(var(--llx,0px),var(--lly,0px))}
+.vf-web{position:absolute;inset:0;width:100%;height:100%}
+.vf-ring{position:absolute;top:52%;left:50%;width:clamp(120px,15vw,240px);aspect-ratio:1;
+  transform:translate(-50%,-50%);border:1px solid currentColor;border-radius:50%;opacity:.55}
+.vf-reticle{position:absolute;top:52%;left:50%;width:clamp(20px,2.3vw,34px);aspect-ratio:1;
+  transform:translate(-50%,-50%);border:1.2px solid currentColor;border-radius:50%}
+.vf-reticle::before,.vf-reticle::after{content:"";position:absolute;background:currentColor}
+.vf-reticle::before{top:50%;left:-45%;right:-45%;height:1px;transform:translateY(-50%)}
+.vf-reticle::after{left:50%;top:-45%;bottom:-45%;width:1px;transform:translateX(-50%)}
+.ember{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  background:radial-gradient(circle at var(--cx,54.5%) var(--cy,55.8%),
+    transparent calc(var(--br,0px) - 40px), rgba(255,140,35,.6) calc(var(--br,0px) - 14px),
+    #eaff9b var(--br,0px), rgba(200,255,62,.5) calc(var(--br,0px) + 6px),
+    transparent calc(var(--br,0px) + 26px));filter:blur(2px)}
+.hero-scene.is-burning .ember{filter:url(#burnTurb)}
+/* figures: .fig = positioned wrapper (animated), inner img = rotation/scale (tune) */
+.fig{position:absolute;width:max-content;z-index:2;will-change:transform}
+.fig img{display:block;height:100%;width:auto;max-width:none;transform-origin:center center;
+  transform:rotate(var(--rot,0deg)) translate(var(--px,0px),var(--py,0px));
+  filter:drop-shadow(0 20px 45px rgba(0,0,0,.5))}
+.fig-master{left:-5%;top:-8.3%;height:240%;--rot:1deg}
+.fig-student{left:50.1%;top:19%;height:204%;--rot:11deg}
+/* объёмные облака — СРЕДНИЙ слой: между небом (z0) и фигурами (z2) */
+.clouds{position:absolute;left:-9%;bottom:-12%;width:118%;max-width:none;height:auto;z-index:1;
+  pointer-events:none;will-change:transform;transform:translate(var(--clx,0px),var(--cly,0px))}
+.spark{position:absolute;left:var(--cx,54.5%);top:var(--cy,55.8%);width:8%;aspect-ratio:1;transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,#fff 0%,#eaff9b 18%,#C8FF3E 42%,rgba(200,255,62,.3) 62%,rgba(200,255,62,0) 74%);
+  border-radius:50%;z-index:5;pointer-events:none;mix-blend-mode:screen;opacity:0;will-change:transform,opacity}
+.fresco-ui{z-index:6;pointer-events:none}
+.fresco-ui .btn{pointer-events:auto}
+.hero-copy{position:absolute;top:7%;left:0;width:100%;padding-inline:clamp(20px,5vw,80px);
+  z-index:4;text-align:center;pointer-events:none}
+.hero-copy .eyebrow{justify-content:center;color:var(--paper);opacity:.9}
+.hero-copy .eyebrow .idx{color:var(--accent)}
+.hero h1{margin:.6rem auto 0;max-width:20ch;color:var(--paper);text-shadow:0 3px 30px rgba(8,14,28,.65)}
+.hero h1 .brush{position:relative;display:inline-block}
+.hero h1 .accent-text{color:var(--accent)}
+.hero-foot{position:absolute;left:50%;transform:translateX(-50%);bottom:5%;
+  z-index:4;display:flex;flex-direction:column;align-items:center;gap:.9rem;width:100%;padding-inline:var(--pad)}
+.hero-foot .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.hero-scrollhint{font-family:var(--f-mono);font-size:var(--t-mono);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--paper);opacity:.75;display:flex;align-items:center;gap:.5rem}
+.hero-badge{position:absolute;z-index:4;right:3%;bottom:5%;background:rgba(10,10,10,.82);
+  backdrop-filter:blur(6px);color:var(--paper);border-radius:var(--r-md);padding:.8rem 1rem;display:flex;align-items:center;gap:.7rem;
+  box-shadow:0 18px 50px rgba(0,0,0,.4);max-width:210px}
+.hero-badge .num{font-family:var(--f-display);font-weight:900;font-size:1.6rem;color:var(--accent);line-height:1}
+.hero-badge .lbl{font-size:.7rem;line-height:1.25;color:var(--paper)}
+/* указатель «подробнее ↓» — появляется в конце анимации (вне зум-сцены, не масштабируется) */
+.hero-more{position:absolute;left:50%;bottom:88px;transform:translateX(-50%);z-index:8;opacity:0;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;gap:.35rem;
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--paper);text-shadow:0 2px 16px rgba(0,0,0,.7),0 0 2px rgba(0,0,0,.5)}
+.hero-more .dn{font-size:1.05rem;line-height:1;animation:moreBounce 1.5s ease-in-out infinite}
+@keyframes moreBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+/* green flood transition cover (opacity-driven, particles fly above it) */
+.hero-wipe{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at 47% 44%,#f4ffc2 0%,#C8FF3E 45%,#a6e000 100%);will-change:opacity}
+
+/* ============================================================
+   MARQUEE / clients
+   ============================================================ */
+.proof .proof-top{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(2.5rem,5vw,4.5rem)}
+.clients{display:flex;align-items:center;gap:clamp(2rem,5vw,4.5rem);flex-wrap:wrap;
+  padding-block:clamp(1.6rem,3vw,2.4rem);border-block:1px solid var(--line)}
+.clients .c-label{font-family:var(--f-mono);font-size:var(--t-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.client{height:clamp(26px,3.4vw,40px);width:auto;filter:grayscale(1) opacity(.55);transition:filter .4s var(--ease),transform .4s var(--ease)}
+.client:hover{filter:grayscale(0) opacity(1);transform:translateY(-3px)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,3.5rem);margin-top:clamp(3rem,6vw,5rem)}
+.metric{position:relative;padding-top:1.6rem;border-top:2px solid var(--ink)}
+.metric .big{font-family:var(--f-display);font-weight:900;font-size:clamp(3rem,7vw,5.4rem);line-height:.9;letter-spacing:-.03em}
+.metric .big .u{color:var(--accent-deep)}
+.metric .desc{margin-top:.8rem;color:var(--muted);font-size:1rem;max-width:30ch}
+.proof-note{margin-top:clamp(3rem,6vw,5rem);max-width:60ch;font-size:var(--t-lead);line-height:1.5}
+
+/* ============================================================
+   PAIN (dark)
+   ============================================================ */
+.pain-head{max-width:min(820px,100%);margin-bottom:clamp(3rem,6vw,4.5rem)}
+.pain-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.pcard{position:relative;background:var(--ink-2);border:1px solid var(--line-dark);border-radius:var(--r-lg);
+  padding:clamp(1.6rem,2.5vw,2.4rem);overflow:hidden;transition:transform .5s var(--ease),border-color .5s}
+.pcard:hover{transform:translateY(-6px);border-color:rgba(200,255,62,.4)}
+.pcard .tag{font-family:var(--f-mono);font-size:var(--t-mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.4rem;display:block}
+.pcard .pnum{font-family:var(--f-display);font-weight:900;font-size:3.4rem;color:rgba(255,255,255,.07);
+  position:absolute;top:1rem;right:1.4rem;line-height:1}
+.pcard p{color:var(--muted-dark);font-size:1.02rem;line-height:1.55}
+.pcard .ico{width:46px;height:46px;margin-bottom:1.4rem;color:var(--accent)}
+.pain-thesis{margin-top:clamp(3rem,6vw,4.5rem);max-width:30ch;font-family:var(--f-display);font-weight:700;
+  font-size:var(--t-h3);line-height:1.25}
+
+/* ============================================================
+   SOLUTION
+   ============================================================ */
+.sol-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+.sol-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.scard{background:var(--paper-soft);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:clamp(1.5rem,2.4vw,2.1rem);transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s}
+.scard:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(20,15,10,.08);border-color:var(--accent-deep)}
+.scard .ico{width:44px;height:44px;color:var(--ink);margin-bottom:1.2rem;
+  display:flex;align-items:center;justify-content:center;background:var(--accent);border-radius:12px;padding:9px}
+.scard h3{margin-bottom:.7rem}
+.scard p{color:var(--muted);font-size:.98rem;line-height:1.55}
+.sol-sticky{position:sticky;top:calc(var(--nav-h) + 30px)}
+
+/* ============================================================
+   AUDIENCE (fit / not fit)
+   ============================================================ */
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:clamp(2.5rem,5vw,4rem)}
+.aud-col{border-radius:var(--r-lg);padding:clamp(1.8rem,3vw,2.6rem)}
+.aud-yes{background:var(--ink);color:var(--paper)}
+.aud-no{background:var(--paper-soft);border:1px solid var(--line)}
+.aud-col h3{display:flex;align-items:center;gap:.7rem;margin-bottom:1.6rem;font-size:var(--t-h3)}
+.aud-col .badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.aud-yes .badge{background:var(--accent);color:var(--ink)}
+.aud-no .badge{background:var(--ink);color:var(--paper)}
+.aud-li{display:flex;gap:.9rem;padding:1rem 0;border-top:1px solid var(--line-dark);font-size:1.02rem;line-height:1.45}
+.aud-no .aud-li{border-top-color:var(--line)}
+.aud-li:first-of-type{border-top:none}
+.aud-li .ic{flex:0 0 auto;width:22px;height:22px;margin-top:2px}
+.aud-yes .aud-li .ic{color:var(--accent)}
+.aud-no .aud-li .ic{color:var(--dim)}
+.aud-final{margin-top:clamp(2.5rem,5vw,3.5rem);max-width:54ch;font-size:var(--t-lead);line-height:1.5;color:var(--muted)}
+
+/* ============================================================
+   DIFFERENCE (scales, dark)
+   ============================================================ */
+.diff-stage{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(1.5rem,4vw,3.5rem);
+  margin-top:clamp(2.5rem,5vw,4rem)}
+.scales-img{width:100%;max-width:440px;margin-inline:auto;
+  filter:drop-shadow(0 40px 60px rgba(0,0,0,.5))}
+.diff-side h4{font-family:var(--f-display);font-weight:700;font-size:1.1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+.diff-side .dot{width:10px;height:10px;border-radius:50%}
+.diff-you .dot{background:var(--accent)}
+.diff-them .dot{background:var(--muted-dark)}
+.diff-side ul li{padding:.8rem 0;border-top:1px solid var(--line-dark);font-size:1rem;line-height:1.45;color:var(--muted-dark)}
+.diff-you ul li{color:var(--paper)}
+.diff-side ul li:first-child{border-top:none}
+.diff-them{text-align:right}
+.diff-them .dot{order:2}
+.diff-them h4{justify-content:flex-end}
+.diff-final{text-align:center;margin-top:clamp(2.5rem,5vw,4rem);font-family:var(--f-display);font-weight:700;
+  font-size:var(--t-h3);line-height:1.3}
+.diff-final b{color:var(--accent)}
+
+/* ============================================================
+   MARQUEE band (Shopify-Editions-style)
+   ============================================================ */
+.marquee{background:var(--ink);color:var(--paper);overflow:hidden;padding:clamp(.9rem,1.8vw,1.4rem) 0;
+  white-space:nowrap;border-block:1px solid var(--line-dark);position:relative;z-index:2}
+.marquee-track{display:inline-flex;will-change:transform;animation:marq 30s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{font-family:var(--f-display);font-weight:700;letter-spacing:-.01em;
+  font-size:clamp(1.1rem,2.6vw,1.9rem);padding-right:.35em;display:inline-flex;align-items:center;gap:.5em}
+.marquee-track .star{color:var(--accent);font-size:.7em}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ============================================================
+   COUNTDOWN — обратный отсчёт до старта потока
+   ============================================================ */
+.countdown{background:var(--ink);color:var(--paper);padding:clamp(2rem,5vw,3.4rem) 0;border-block:1px solid var(--line-dark)}
+.cd-wrap{display:flex;align-items:center;justify-content:space-between;gap:clamp(1.4rem,4vw,3rem);flex-wrap:wrap}
+.cd-head .eyebrow{color:var(--paper);opacity:.72}
+.cd-head .eyebrow .idx{color:var(--accent)}
+.cd-date{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1;margin-top:.45rem}
+.cd-timer{display:flex;align-items:flex-start;gap:clamp(.4rem,1.4vw,1rem);font-variant-numeric:tabular-nums}
+.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:clamp(46px,9vw,78px)}
+.cd-num{font-family:var(--f-mono);font-weight:700;font-size:clamp(2rem,7vw,3.5rem);line-height:1;color:var(--accent)}
+.cd-lbl{font-family:var(--f-mono);font-size:clamp(.58rem,1.4vw,.74rem);letter-spacing:.16em;text-transform:uppercase;opacity:.6;margin-top:.45rem}
+.cd-sep{font-family:var(--f-mono);font-weight:700;font-size:clamp(1.5rem,5vw,2.8rem);line-height:1;color:var(--paper);opacity:.28;margin-top:.1em}
+@media (max-width:760px){
+  .cd-wrap{flex-direction:column;align-items:flex-start;gap:1.3rem}
+  .cd-timer{width:100%;justify-content:space-between;gap:.25rem}
+  .cd-unit{min-width:0;flex:1}
+}
+
+/* ============================================================
+   PROGRAM — pinned horizontal track
+   ============================================================ */
+.prog-intro{margin-bottom:clamp(2rem,4vw,3rem)}
+.prog-pin{position:relative;overflow:hidden}
+.prog-track{display:flex;gap:1.4rem;padding-inline:var(--pad);will-change:transform;align-items:stretch}
+.prog-panel{flex:0 0 auto;width:min(80vw,440px);background:var(--paper-soft);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:clamp(1.8rem,3vw,2.6rem);display:flex;flex-direction:column;
+  transition:border-color .4s var(--ease)}
+.prog-panel:hover{border-color:var(--accent-deep)}
+.prog-panel.intro-panel{background:transparent;border:none;align-items:center;justify-content:center;text-align:center;
+  width:min(70vw,360px)}
+.intro-panel .stack-img{width:min(86%,278px);filter:drop-shadow(0 40px 50px rgba(20,15,10,.18));margin-bottom:1.6rem}
+.intro-panel .prog-hint{font-family:var(--f-display);font-weight:600;font-size:1.12rem;line-height:1.35;color:var(--muted)}
+.intro-panel .prog-hint b{color:var(--ink)}
+.week-panel .w-no{font-family:var(--f-mono);font-size:var(--t-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent-deep)}
+.week-panel h3{font-size:var(--t-h3);margin:.5rem 0 1.4rem;padding-bottom:1.4rem;border-bottom:2px solid var(--ink)}
+.week-panel .num-tag{font-family:var(--f-display);font-weight:900;font-size:3.4rem;color:var(--paper-warm);line-height:1;margin-top:auto;align-self:flex-end}
+.lesson{display:flex;gap:1.1rem;padding:1rem 0;border-top:1px solid var(--line);transition:padding-left .4s var(--ease)}
+.lesson:first-of-type{border-top:none}
+.lesson:hover{padding-left:.6rem}
+.lesson .l-no{font-family:var(--f-mono);font-size:.85rem;color:var(--dim);flex:0 0 auto;width:2.4em;font-weight:500}
+.lesson .l-body{display:flex;flex-direction:column;gap:.28rem}
+.lesson .l-title{font-weight:600;font-size:1.02rem;line-height:1.35}
+.lesson .l-title b{font-weight:700}
+.lesson .l-desc{font-size:.82rem;line-height:1.45;color:var(--muted);font-weight:400}
+.prog-progress{height:3px;background:var(--line);border-radius:2px;margin:clamp(1.5rem,3vw,2.5rem) var(--pad) 0;overflow:hidden}
+.prog-progress span{display:block;height:100%;width:0;background:var(--accent-deep);border-radius:2px}
+
+/* ============================================================
+   FORMAT (grid)
+   ============================================================ */
+.fmt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:clamp(2.5rem,5vw,4rem)}
+.fcard{background:var(--paper-soft);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:clamp(1.6rem,2.5vw,2.2rem);transition:transform .5s var(--ease),border-color .5s,box-shadow .5s}
+.fcard:hover{transform:translateY(-6px);border-color:var(--accent-deep);box-shadow:0 24px 50px rgba(20,15,10,.07)}
+.fcard .ico{width:40px;height:40px;color:var(--ink);margin-bottom:1.2rem}
+.fcard h3{font-size:1.18rem;margin-bottom:.7rem;font-weight:700}
+.fcard p{color:var(--muted);font-size:.98rem;line-height:1.55}
+.fcard .pin{font-family:var(--f-mono);font-size:var(--t-mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-deep);display:inline-block;margin-bottom:1rem}
+
+/* ============================================================
+   AUTHOR (dark)
+   ============================================================ */
+.auth-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(2rem,5vw,4rem);align-items:center;margin-top:clamp(2.5rem,5vw,4rem)}
+.auth-photo{position:relative}
+.auth-photo img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r-lg);
+  border:1px solid var(--line-dark)}
+.auth-photo::after{content:"";position:absolute;inset:14px -14px -14px 14px;border:2px solid var(--accent);
+  border-radius:var(--r-lg);z-index:-1}
+.auth-cap{margin-top:1.4rem}
+.auth-cap .nm{font-family:var(--f-display);font-weight:800;font-size:1.4rem}
+.auth-cap .role{color:var(--muted-dark);font-size:.95rem;margin-top:.2rem}
+.auth-bio p{font-size:var(--t-lead);line-height:1.6;color:var(--paper);max-width:54ch}
+.auth-bio .quote{font-family:var(--f-display);font-weight:600;font-size:var(--t-h3);line-height:1.3;margin-bottom:1.6rem}
+.auth-cases{margin-top:2.4rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid var(--line-dark)}
+.auth-cases .ac-logos{display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.auth-cases .client{filter:grayscale(1) brightness(0) invert(1) opacity(.6)}
+.auth-cases .client:hover{filter:grayscale(0) opacity(1)}
+.ig-link{font-family:var(--f-mono);font-size:.9rem;color:var(--accent);display:inline-flex;align-items:center;gap:.5rem}
+
+/* ============================================================
+   PRICING
+   ============================================================ */
+.price-head{text-align:center;max-width:24ch;margin-inline:auto}
+.price-amount{font-family:var(--f-display);font-weight:900;font-size:clamp(3rem,9vw,6.4rem);line-height:1;letter-spacing:-.03em;text-align:center;margin:clamp(1.5rem,3vw,2.5rem) 0 1rem}
+.price-amount .cur{color:var(--accent-deep)}
+.price-sub{text-align:center;color:var(--muted);font-size:var(--t-lead);margin-bottom:clamp(2.5rem,5vw,4rem)}
+.incl{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem 2rem;max-width:920px;margin:0 auto clamp(3rem,6vw,5rem)}
+.incl li{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 0;font-size:1.02rem;line-height:1.4}
+.incl .ic{flex:0 0 auto;width:22px;height:22px;color:var(--accent-deep);margin-top:2px}
+.econ{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:1000px;margin-inline:auto}
+.ecard{border-radius:var(--r-lg);padding:clamp(1.8rem,3vw,2.6rem);position:relative;overflow:hidden}
+.ecard.them{background:var(--paper-soft);border:1px solid var(--line)}
+.ecard.us{background:var(--ink);color:var(--paper)}
+.ecard .et{font-family:var(--f-mono);font-size:var(--t-mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem;display:block}
+.ecard.them .et{color:var(--dim)}
+.ecard.us .et{color:var(--accent)}
+.ecard .ep{font-family:var(--f-display);font-weight:900;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1;margin-bottom:1.2rem}
+.ecard.us .ep{color:var(--accent)}
+.ecard p{font-size:1rem;line-height:1.55}
+.ecard.them p{color:var(--muted)}
+.ecard.us p{color:var(--muted-dark)}
+.ecard .total{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--line);font-weight:700;color:var(--ink);font-size:1.05rem}
+.ecard.us .total{border-top-color:var(--line-dark);color:var(--paper)}
+.ecard.us .total b{color:var(--accent)}
+.ecard.us .ribbon{position:absolute;top:1.4rem;right:-2.6rem;background:var(--accent);color:var(--ink);
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  padding:.4rem 3rem;transform:rotate(45deg)}
+.price-cta{text-align:center;margin-top:clamp(2.5rem,5vw,4rem)}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-grid{display:grid;grid-template-columns:.5fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start;margin-top:clamp(2rem,4vw,3rem)}
+.faq-list{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+  text-align:left;padding:1.6rem 0;font-family:var(--f-display);font-weight:600;font-size:clamp(1.05rem,1.8vw,1.32rem);line-height:1.3}
+.faq-q .pm{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;position:relative;transition:background .35s,border-color .35s}
+.faq-q .pm::before,.faq-q .pm::after{content:"";position:absolute;background:var(--ink);transition:transform .35s var(--ease),background .35s}
+.faq-q .pm::before{width:13px;height:2px}
+.faq-q .pm::after{width:2px;height:13px}
+.faq-item.open .faq-q .pm{background:var(--accent);border-color:var(--accent)}
+.faq-item.open .faq-q .pm::after{transform:rotate(90deg);opacity:0}
+.faq-a{overflow:hidden;height:0;transition:height .45s var(--ease)}
+.faq-a .inner{padding:0 0 1.7rem;max-width:62ch;color:var(--muted);font-size:1.04rem;line-height:1.6}
+
+/* ============================================================
+   FINAL CTA (door + form, dark)
+   ============================================================ */
+.final{overflow:hidden}
+.door-wrap{display:flex;justify-content:center;margin-bottom:clamp(1.5rem,3vw,2.5rem)}
+.door-img{width:min(64%,340px);filter:drop-shadow(0 30px 60px rgba(200,255,62,.25))}
+.final-head{text-align:center;max-width:60ch;margin-inline:auto;margin-bottom:clamp(2.5rem,5vw,4rem)}
+.final-head h2{font-size:clamp(3rem,10vw,7rem);font-weight:900;line-height:.95;margin-bottom:1.4rem}
+.final-head p{color:var(--muted-dark);font-size:var(--t-lead);line-height:1.5;max-width:52ch;margin-inline:auto}
+.form{max-width:520px;margin-inline:auto;display:flex;flex-direction:column;gap:1.3rem}
+.field{display:flex;flex-direction:column;gap:.55rem}
+.field.row{flex-direction:row;gap:1rem}
+.field.row>.field{flex:1}
+.field label{font-family:var(--f-mono);font-size:var(--t-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted-dark)}
+.field input,.field textarea{font-family:var(--f-body);font-size:1.05rem;padding:1rem 1.1rem;
+  border:1.5px solid rgba(255,255,255,.18);border-radius:var(--r-md);background:rgba(255,255,255,.04);color:var(--paper);
+  transition:border-color .3s,box-shadow .3s,background .3s}
+.field input::placeholder,.field textarea::placeholder{color:var(--dim-dark)}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.07);box-shadow:0 0 0 4px var(--accent-glow)}
+.field textarea{resize:vertical;min-height:84px}
+.field .err{color:var(--danger);font-size:.82rem;min-height:1em;display:none}
+.field.invalid input,.field.invalid textarea{border-color:var(--danger)}
+.field.invalid .err{display:block}
+.form .btn--primary{justify-content:center;margin-top:.5rem}
+.form-note{font-size:.85rem;color:var(--dim-dark);text-align:center;line-height:1.5;margin-top:.3rem}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:#060606;color:var(--paper);padding-block:clamp(3rem,6vw,5rem) 2rem}
+.foot-top{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:3rem}
+.foot-brand{font-family:var(--f-display);font-weight:900;font-size:clamp(2.4rem,7vw,5rem);line-height:.95;letter-spacing:-.03em}
+.foot-brand .accent-text{color:var(--accent)}
+.foot-links{display:flex;gap:2.5rem;flex-wrap:wrap}
+.foot-links a{color:var(--muted-dark);font-size:.95rem;transition:color .3s}
+.foot-links a:hover{color:var(--accent)}
+.foot-bot{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid var(--line-dark);
+  font-family:var(--f-mono);font-size:.75rem;color:var(--dim-dark)}
+
+/* ============================================================
+   STICKY CTA + TOAST
+   ============================================================ */
+.sticky-cta{position:fixed;bottom:24px;right:24px;z-index:900;
+  opacity:0;transform:translateY(20px) scale(.95);pointer-events:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.sticky-cta.show{opacity:1;transform:none;pointer-events:auto}
+.toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,180%);z-index:2000;
+  opacity:0;visibility:hidden;pointer-events:none;
+  background:var(--accent);color:var(--ink);padding:1rem 1.6rem;border-radius:var(--pill);font-weight:700;
+  font-family:var(--f-display);font-size:.98rem;box-shadow:0 16px 50px rgba(0,0,0,.3);
+  transition:transform .5s var(--ease),opacity .4s var(--ease),visibility .4s;max-width:90vw;text-align:center}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
+.toast.error{background:var(--danger);color:#fff}
+
+/* ============================================================
+   DIVIDER (ink brush)
+   ============================================================ */
+/* переход «разорванная страница» бежевый → чёрный */
+/* переход «разорванная страница»: реальная текстура (бумага сверху → рваные волокна → тёмная секция снизу) */
+.tear{display:block;width:100%;line-height:0;background:var(--paper);margin-bottom:-1px}
+.tear-img{display:block;width:100%;height:auto}
+
+/* ============================================================
+   REVEAL animations
+   ============================================================ */
+[data-reveal]{opacity:0;transform:translateY(38px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+[data-reveal].in{opacity:1;transform:none}
+[data-reveal="left"]{transform:translateX(-40px)}
+[data-reveal="right"]{transform:translateX(40px)}
+[data-reveal="scale"]{transform:scale(.94)}
+[data-reveal].in{transform:none}
+.reveal-lines .ln{display:block;overflow:hidden}
+.reveal-lines .ln>span{display:block;transform:translateY(110%);transition:transform 1s var(--ease)}
+.reveal-lines.in .ln>span{transform:none}
+.reveal-lines.in .ln:nth-child(2)>span{transition-delay:.08s}
+.reveal-lines.in .ln:nth-child(3)>span{transition-delay:.16s}
+/* пословное появление заголовков (blur-in + подъём) */
+.sec h2 .w{display:inline-block}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1040px){
+  .hero-badge{display:none}
+  .sol-grid,.auth-grid,.faq-grid{grid-template-columns:1fr}
+  .sol-sticky{position:static}
+  /* program: native horizontal swipe on mobile (no pin) */
+  .prog-track{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    padding-bottom:1.2rem;transform:none!important}
+  .prog-track::-webkit-scrollbar{height:0}
+  .prog-panel{scroll-snap-align:start;width:min(82vw,360px)}
+  .prog-panel.intro-panel{display:none}
+  .prog-progress{display:none}
+  .diff-stage{grid-template-columns:1fr}
+  .diff-them{text-align:left}.diff-them h4{justify-content:flex-start}.diff-them .dot{order:-1}
+  .scales-img{order:-1;max-width:340px}
+  .incl{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .nav-links,.nav .nav-cta{display:none}
+  .burger{display:flex}
+  .pain-cards,.sol-cards,.fmt-grid,.aud-grid,.econ,.metrics,.incl{grid-template-columns:1fr}
+  .field.row{flex-direction:column}
+  .clients{gap:1.6rem 2rem}
+  .foot-links{gap:1.4rem}
+  /* ===== мобильный hero: квадрат 1:1, текст НАД кадром ===== */
+  .hero,.hero-scene{background:var(--paper)}          /* бежевые поля вместо чёрных */
+  .hero-scene{--burn-cx:.52;--burn-cy:.61}            /* точка прогорания = контакт рук (под новую композицию) */
+  .fresco{top:37vh;left:0;transform:none;width:100%;height:100vw;aspect-ratio:auto}   /* кадр-квадрат 1:1 (явная высота — надёжно в Safari) */
+  .fresco-ui{top:0;left:0;transform:none;width:100%;height:100%;aspect-ratio:auto}
+  .sky{top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:48% 50%}  /* солнце по центру */
+  .clouds{left:-82.1%;top:-5.1%;width:256.0%;bottom:auto}   /* облака — твоя подгонка */
+  /* подложка 3:4: НИЗ = низ bg-квадрата (37vh+100vw), кадр тянется ВВЕРХ; сверху остаётся бежевое поле под подпись */
+  .reveal-img{position:absolute;left:0;top:auto;bottom:calc(63vh - 100vw);width:100%;height:calc(100vw * 4 / 3);transform:none;
+    aspect-ratio:auto;object-fit:cover;object-position:center 32%}
+  /* прожиг + кромка-тление НЕ уходят ниже низа bg-кадра → нижняя грань ровная, совпадает (без «купола») */
+  #heroBurn,#ember{clip-path:inset(0 0 calc(63vh - 100vw) 0)}
+  .hero-copy{top:calc(var(--nav-h) + 1rem);padding-inline:1.4rem;text-align:left}
+  .hero-copy .eyebrow{justify-content:flex-start;color:var(--muted)}
+  .hero-copy .eyebrow .idx{color:var(--accent-deep)}
+  .hero h1{max-width:15ch;font-size:clamp(1.4rem,5.8vw,1.85rem);color:var(--ink);text-shadow:none;margin:.5rem 0 0}
+  .hero h1 .accent-text{color:var(--accent-deep)}
+  /* чистый hero: кнопки убраны (появятся снизу по скроллу — sticky), вместо них подсказка */
+  .hero-foot{bottom:2.4vh}
+  .hero-foot .hero-cta{display:none}
+  .hero-scrollhint{display:none}                       /* на первом кадре призыв не нужен */
+  /* «подробнее ↓» — в бежевом поле НАД подложкой (тёмный текст на бумаге), крупнее и заметнее */
+  .hero-more{bottom:calc(63vh + 33.3vw + 18px);top:auto;color:var(--ink);text-shadow:none;font-size:.82rem;gap:.5rem}
+  .hero-more .dn{color:var(--accent-deep);font-size:1.3rem}
+  /* фигуры — твоя подгонка */
+  .fig-master{left:-37.5%;top:12.8%;height:148.0%;--rot:9deg}
+  .fig-student{left:35.7%;top:37.8%;height:124.0%;--rot:19deg}
+  .spark{width:18%}
+  /* sticky-кнопка по центру снизу, а не сбоку */
+  .sticky-cta{right:50%;transform:translateX(50%) translateY(20px);left:auto;bottom:16px}
+  .sticky-cta.show{transform:translateX(50%) translateY(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  [data-reveal],.reveal-lines .ln>span,.hero h1 .line>span{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- progress + cursor -->
+<div class="progress" id="progress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SVG: маска прогорания с рваным «тлеющим» краем (искажается ТОЛЬКО край дыры, не картинка) -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+  <filter id="burnTurb" x="-25%" y="-25%" width="150%" height="150%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.013 0.02" numOctaves="1" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a href="#hero" class="brand" data-scroll>
+      <span class="dot"></span><b>DANYA</b><span class="pro">PROAI</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#program" data-scroll>Программа</a></li>
+        <li><a href="#author" data-scroll>Об авторе</a></li>
+        <li><a href="#pricing" data-scroll>Стоимость</a></li>
+        <li><a href="#faq" data-scroll>FAQ</a></li>
+      </ul>
+      <a href="#apply" class="btn btn--primary nav-cta" data-scroll>Оставить заявку <span class="arr">→</span></a>
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- mobile menu -->
+<div class="menu" id="menu">
+  <a href="#program" data-scroll><span>01</span>Программа</a>
+  <a href="#author" data-scroll><span>02</span>Об авторе</a>
+  <a href="#pricing" data-scroll><span>03</span>Стоимость</a>
+  <a href="#faq" data-scroll><span>04</span>FAQ</a>
+  <a href="#apply" data-scroll><span>→</span>Оставить заявку</a>
+  <div class="m-foot">
+    <span>@danyaproai</span>
+    <span>Almaty · Online</span>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="hero">
+  <div class="hero-scene" id="heroScene" style="--cx:54.5%;--cy:55.8%;--burn:0%">
+    <!-- ПОДЛОЖКА на весь экран (проявляется из прогорания) -->
+    <img class="reveal-img" id="revealImg" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780926065/ChatGPT_Image_8_%D0%B8%D1%8E%D0%BD%D1%8F_2026_%D0%B3._18_26_58_u98okb.png" alt="" />
+
+    <!-- ПЕРЕДНИЙ слой на весь экран (паперные поля + фреска 21:9), прогорает целиком -->
+    <div class="hero-front" id="heroBurn">
+      <div class="fresco">
+        <img class="sky" id="sky" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780925132/ChatGPT_Image_8_%D0%B8%D1%8E%D0%BD%D1%8F_2026_%D0%B3._18_09_11_wtvjhk.png" alt="" />
+        <img class="clouds" id="clouds" src="./assets/clouds-cut.png" alt="" />
+        <div class="fig fig-master" id="figMaster"><img src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780868047/hf_20260607_211921_7396fc09-08a3-4b5f-90f6-eaad79adaceb-2_cr49nl.png" alt="Мастер, передающий кисть" /></div>
+        <div class="fig fig-student" id="figStudent"><img src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780868048/hf_20260607_212036_d9968afc-7a7f-4511-aeee-edd5c2848cf8-2_okpir7.png" alt="Ученик, тянущийся к кисти" /></div>
+      </div>
+    </div>
+    <div class="spark" id="spark"></div>
+    <div class="ember" id="ember"></div>
+
+    <!-- UI поверх фрески, повторяет рамку 21:9, не прогорает -->
+    <div class="fresco-ui">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="idx">DANYA PROAI</span> · живое обучение</span>
+        <h1 class="h-hero" id="heroTitle">ИИ-инструменты — это новая <span class="brush"><span class="accent-text">кисть</span></span>. Я научу тебя держать её правильно.</h1>
+      </div>
+
+      <div class="hero-foot" id="heroFoot">
+        <div class="hero-cta">
+          <a href="#apply" class="btn btn--primary btn--lg" data-scroll>Оставить заявку <span class="arr">→</span></a>
+          <a href="#program" class="btn btn--ghost" data-scroll>Узнать программу</a>
+        </div>
+        <div class="hero-scrollhint">прокрути ↓</div>
+      </div>
+
+      <div class="hero-badge">
+        <span class="num">10</span>
+        <span class="lbl">человек в группе.<br>живое обучение у автора</span>
+      </div>
+    </div>
+    <div class="hero-more" id="heroMore"><span>подробнее</span><span class="dn">↓</span></div>
+  </div>
+  <!-- видоискатель-прицел: направляющие сходятся к центру (HUD), НЕ масштабируется при зуме, переживает прожиг -->
+  <div class="viewfinder" id="frescoLines" aria-hidden="true">
+    <svg class="vf-web" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <g stroke="currentColor" stroke-width="0.07" fill="none">
+        <line x1="6" y1="6" x2="45" y2="48"/><line x1="94" y1="6" x2="55" y2="48"/>
+        <line x1="6" y1="96" x2="45" y2="56"/><line x1="94" y1="96" x2="55" y2="56"/>
+        <line x1="50" y1="-2" x2="50" y2="42"/><line x1="50" y1="102" x2="50" y2="62"/>
+        <line x1="-2" y1="50" x2="40" y2="51"/><line x1="102" y1="50" x2="60" y2="51"/>
+        <line x1="27" y1="2" x2="46" y2="45"/><line x1="73" y1="2" x2="54" y2="45"/>
+        <line x1="27" y1="98" x2="46" y2="59"/><line x1="73" y1="98" x2="54" y2="59"/>
+      </g>
+    </svg>
+    <span class="vf-ring"></span>
+    <span class="vf-reticle"></span>
+  </div>
+</header>
+
+<!-- ===================== COUNTDOWN · старт потока ===================== -->
+<section class="countdown" id="countdown" aria-label="Обратный отсчёт до старта потока">
+  <div class="wrap cd-wrap">
+    <div class="cd-head" data-reveal>
+      <span class="eyebrow"><span class="idx">★</span> старт ближайшего потока</span>
+      <div class="cd-date">15 июня</div>
+    </div>
+    <div class="cd-timer" id="cdTimer" role="timer" aria-label="до старта осталось">
+      <div class="cd-unit"><span class="cd-num" id="cdDays">00</span><span class="cd-lbl">дней</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cdHours">00</span><span class="cd-lbl">часов</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cdMins">00</span><span class="cd-lbl">минут</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cdSecs">00</span><span class="cd-lbl">секунд</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 · SOCIAL PROOF ===================== -->
+<section class="sec proof" id="proof">
+  <div class="wrap">
+    <div class="proof-top">
+      <div>
+        <span class="eyebrow" data-reveal><span class="idx">02</span> не теория — практика</span>
+        <h2 class="h1" data-reveal>Это уже <span class="accent-text">работает</span>.</h2>
+      </div>
+    </div>
+
+    <div class="clients" data-reveal>
+      <span class="c-label">Клиенты и эфиры</span>
+      <img class="client" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780830373/client-tass.png_k6r0pr.png" alt="ТАСС" />
+      <img class="client" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780830373/client-tassay_smryug.png" alt="Tassay" />
+      <img class="client" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780830372/client-indomie_owwnci.png" alt="Indomie" />
+    </div>
+
+    <div class="metrics">
+      <div class="metric" data-reveal>
+        <div class="big"><span class="counter" data-to="4">0</span></div>
+        <p class="desc">ролика — каждый собрал больше <b>1 млн просмотров</b> в Reels</p>
+      </div>
+      <div class="metric" data-reveal>
+        <div class="big"><span class="counter" data-to="2">0</span></div>
+        <p class="desc">победы — в конкурсе от <b>Tassay Energy</b></p>
+      </div>
+      <div class="metric" data-reveal>
+        <div class="big"><span class="counter" data-to="1">0</span></div>
+        <p class="desc">ролик — в эфире <b>ТАСС</b>, российском новостном агентстве</p>
+      </div>
+    </div>
+
+    <p class="proof-note" data-reveal>
+      Это не теория. Это работающий рабочий навык, который я каждый день применяю
+      в собственных проектах. <span class="mark">И который теперь могу передать тебе.</span>
+    </p>
+  </div>
+</section>
+
+<!-- переход «разорванная страница»: бежевый → чёрный -->
+<div class="tear" aria-hidden="true">
+  <img class="tear-img" src="./assets/tear-edge.png?v=4" alt="" />
+</div>
+
+<!-- ===================== 03 · PAIN (dark) ===================== -->
+<section class="sec sec--dark pain" id="pain">
+  <div class="wrap">
+    <div class="pain-head">
+      <span class="eyebrow" data-reveal><span class="idx">03</span> почему сейчас</span>
+      <h2 class="h1" data-reveal>Прогресс не ждёт. Каждый день промедления — это шаг <span class="accent-text">назад</span>.</h2>
+    </div>
+
+    <div class="pain-cards">
+      <article class="pcard" data-reveal>
+        <span class="pnum">01</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg>
+        <span class="tag">для СММ‑щика</span>
+        <p>Ты вручную клепаешь баннеры, реки и рилсы, а конкуренты уже выкатывают по 10 ИИ‑роликов в день. Через полгода ты будешь не в состоянии конкурировать ни по объёму, ни по качеству.</p>
+      </article>
+      <article class="pcard" data-reveal>
+        <span class="pnum">02</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v3l2 1"/></svg>
+        <span class="tag">для блогера / креативщика</span>
+        <p>Ты смотришь чужие виральные кадры и не понимаешь, как они сделаны. Пробовал Midjourney — получил мусор. Открыл туториал — всё было устаревшее. Время уходит, тренды меняются быстрее, чем ты успеваешь учиться.</p>
+      </article>
+      <article class="pcard" data-reveal>
+        <span class="pnum">03</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20"/><path d="M5 7c0-2 2-3 7-3s7 1 7 3-2 3-7 3"/><path d="M5 7v6c0 2 2 3 7 3"/><path d="M19 13c0 2-2 3-4 3"/></svg>
+        <span class="tag">для монтажёра / дизайнера</span>
+        <p>Заказчики начали просить ИИ‑контент в брифах. Ты говоришь «не работаю с этим» — и теряешь клиента, который идёт к тому, кто умеет. Каждое такое «нет» — это деньги, которые проходят мимо.</p>
+      </article>
+    </div>
+
+    <p class="pain-thesis" data-reveal>
+      Это уже <span class="accent-text">базовый навык</span> у высокооплачиваемых спецов. Вопрос только — успеешь ли ты освоить его раньше, чем рынок начнёт требовать его по умолчанию.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== 04 · SOLUTION ===================== -->
+<section class="sec sol" id="solution">
+  <div class="wrap">
+    <div class="sol-grid">
+      <div class="sol-sticky">
+        <span class="eyebrow" data-reveal><span class="idx">04</span> решение</span>
+        <h2 class="h1" data-reveal>Что ты унесёшь с обучения</h2>
+        <p class="lead dropcap" data-reveal style="margin-top:1.6rem">Не набор разрозненных туториалов, а собранный пайплайн производства контента — от идеи до готового ролика.</p>
+      </div>
+      <div class="sol-cards">
+        <article class="scard" data-reveal>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+          <h3 class="h3">Стек инструментов</h3>
+          <p>Higgsfield (Nano Banana 2, Kling, Seedance), Midjourney, GPT + GPT Image, Suno, ElevenLabs. Каждый инструмент — со своим местом в твоём workflow.</p>
+        </article>
+        <article class="scard" data-reveal>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16"/><path d="M4 12h10"/><path d="M4 17h7"/><path d="m17 14 3 3-3 3"/></svg></span>
+          <h3 class="h3">Промпт‑инжиниринг</h3>
+          <p>Система весов слов, синтаксис референсов, итерационный подход. Как из общей идеи собрать промпт, который даст кинокадр, а не стоковую серость.</p>
+        </article>
+        <article class="scard" data-reveal>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M8.4 6H15a3 3 0 0 1 3 3v6.6"/></svg></span>
+          <h3 class="h3">Полный пайплайн</h3>
+          <p>От мудборда и сценария до финального ролика с озвучкой и музыкой. Не отдельные навыки, а готовый процесс производства контента.</p>
+        </article>
+        <article class="scard" data-reveal>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <h3 class="h3">Кейсовая практика</h3>
+          <p>Не «посмотри, как я делаю». А «сделай сам, я разберу». Каждый урок — задание, каждое задание — разбор лично от меня.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 · AUDIENCE ===================== -->
+<section class="sec sec--paper-soft aud" id="audience">
+  <div class="wrap">
+    <span class="eyebrow" data-reveal><span class="idx">05</span> кому подойдёт</span>
+    <h2 class="h1" data-reveal>Это не для всех.<br>Это <span class="accent-text">нормально</span>.</h2>
+    <div class="aud-grid">
+      <div class="aud-col aud-yes" data-reveal="left">
+        <h3 class="h3"><span class="badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></span>Подходит</h3>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>Хочешь освоить ИИ‑контент как новый рабочий навык</div>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>Умеешь базово работать с GPT (знаешь, что такое промпт)</div>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>Готов выполнять домашки и приходить на каждый зум</div>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>Понимаешь, что результат — функция твоих усилий, а не магии</div>
+      </div>
+      <div class="aud-col aud-no" data-reveal="right">
+        <h3 class="h3"><span class="badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Не подходит</h3>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Ищешь кнопку «сделать всё за тебя»</div>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Не готов выделить 3 недели на регулярные занятия</div>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Ждёшь готовых шаблонов и рецептов вместо понимания</div>
+        <div class="aud-li"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Уверен, что ИИ — это «хайп, который пройдёт»</div>
+      </div>
+    </div>
+    <p class="aud-final" data-reveal>
+      Если ты в правой колонке — спасибо за честность, тебе не сюда. Если в левой — продолжай скролл, дальше про программу.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== 06 · DIFFERENCE (dark) ===================== -->
+<section class="sec sec--dark diff" id="difference">
+  <div class="wrap">
+    <div style="text-align:center;max-width:min(620px,100%);margin-inline:auto">
+      <span class="eyebrow" data-reveal style="justify-content:center"><span class="idx">06</span> главное отличие</span>
+      <h2 class="h1" data-reveal>Не все курсы одинаковые. Вот разница.</h2>
+    </div>
+    <div class="diff-stage">
+      <div class="diff-side diff-you" data-reveal="left">
+        <h4><span class="dot"></span>DANYA PROAI</h4>
+        <ul>
+          <li>10 человек в группе</li>
+          <li>Я лично разбираю каждую домашку</li>
+          <li>Голосовые в чате, личные сессии по запросу</li>
+          <li>Программа актуализируется под текущую мету каждый поток</li>
+        </ul>
+      </div>
+      <img class="scales-img" id="scales" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780829725/origami-scales_q9fiuq.png" alt="Весы: ты против толпы других курсов" data-reveal="scale" />
+      <div class="diff-side diff-them" data-reveal="right">
+        <h4><span class="dot"></span>Другие курсы</h4>
+        <ul>
+          <li>300+ человек на потоке</li>
+          <li>Куратор на сотни студентов отвечает раз в 2–3 дня</li>
+          <li>Записанный материал, который устаревает быстрее, чем ты его проходишь</li>
+          <li>Усреднённая обратная связь по чек‑листу</li>
+        </ul>
+      </div>
+    </div>
+    <p class="diff-final" data-reveal>Цена сопоставимая. <b>Качество внимания — несопоставимое.</b></p>
+  </div>
+</section>
+
+<!-- ===================== 07 · PROGRAM (pinned horizontal) ===================== -->
+<section class="sec prog" id="program">
+  <div class="wrap prog-intro">
+    <span class="eyebrow" data-reveal><span class="idx">07</span> программа обучения</span>
+    <h2 class="h1 no-cap" data-reveal>9 уроков · 3 недели · от текста и идей до готового <span class="accent-text">ролика</span></h2>
+  </div>
+  <div class="prog-pin" id="progPin">
+    <div class="prog-track" id="progTrack">
+      <div class="prog-panel intro-panel">
+        <img class="stack-img" id="stack" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780829725/origami-stack_cwo6qd.png" alt="9 уроков" />
+        <p class="prog-hint">Каждый урок — задание.<br><b>Каждое задание — разбор лично от меня.</b></p>
+      </div>
+      <article class="prog-panel week-panel">
+        <span class="w-no">Неделя 1</span><h3>Текст, идеи, изображения</h3>
+        <div class="lesson"><span class="l-no">01</span><div class="l-body"><span class="l-title">Старт + <b>GPT</b> как ОС контент‑мейкера</span><span class="l-desc">Основы промптинга, формула из 6 элементов, мудборды, Projects и Custom GPTs.</span></div></div>
+        <div class="lesson"><span class="l-no">02</span><div class="l-body"><span class="l-title">Сценарии, идеи и форматы контента</span><span class="l-desc">Хуки первых 3 секунд, 5 рабочих форматов автора, разбор личных связок.</span></div></div>
+        <div class="lesson"><span class="l-no">03</span><div class="l-body"><span class="l-title">ИИ‑изображения: <b>Nano Banana 2, GPT Image, Midjourney</b></span><span class="l-desc">Higgsfield как платформа, ракурсы, свет, b‑roll, консистентность визуала.</span></div></div>
+        <span class="num-tag">01</span>
+      </article>
+      <article class="prog-panel week-panel">
+        <span class="w-no">Неделя 2</span><h3>Аудио и видео</h3>
+        <div class="lesson"><span class="l-no">04</span><div class="l-body"><span class="l-title">Голос, музыка, аватары</span><span class="l-desc">Почему звук раньше видео. ElevenLabs, Fish Audio, Suno, Kling Motion Control.</span></div></div>
+        <div class="lesson"><span class="l-no">05</span><div class="l-body"><span class="l-title"><b>Kling AI</b> в глубину</span><span class="l-desc">Режимы, text‑to‑video vs image‑to‑video, склейки, типичные приёмы и ошибки.</span></div></div>
+        <div class="lesson"><span class="l-no">06</span><div class="l-body"><span class="l-title">Сравнение видео: <b>Kling, Seedance, Grok</b></span><span class="l-desc">Когда какой брать, демо одной задачи на трёх инструментах.</span></div></div>
+        <span class="num-tag">02</span>
+      </article>
+      <article class="prog-panel week-panel">
+        <span class="w-no">Неделя 3</span><h3>Сборка, монетизация, кейсы</h3>
+        <div class="lesson"><span class="l-no">07</span><div class="l-body"><span class="l-title"><b>Seedance</b> в глубину</span><span class="l-desc">Режимы, стилистика, промптинг и управление результатом под разные форматы.</span></div></div>
+        <div class="lesson"><span class="l-no">08</span><div class="l-body"><span class="l-title">Производственный конвейер + монетизация</span><span class="l-desc">End‑to‑end пайплайн, CapCut с ИИ, услуги/фриланс, упаковка кейса и портфолио.</span></div></div>
+        <div class="lesson"><span class="l-no">09</span><div class="l-body"><span class="l-title">Разбор реальных проектов <b>(финал)</b></span><span class="l-desc">Технический разбор проектов автора изнутри: инструменты, пайплайн, «как сделано».</span></div></div>
+        <span class="num-tag">03</span>
+      </article>
+    </div>
+    <div class="prog-progress"><span id="progBar"></span></div>
+  </div>
+</section>
+
+<!-- ===================== 08 · FORMAT ===================== -->
+<section class="sec sec--paper-soft fmt" id="format">
+  <div class="wrap">
+    <span class="eyebrow" data-reveal><span class="idx">08</span> формат обучения</span>
+    <h2 class="h1" data-reveal>Как проходит обучение</h2>
+    <div class="fmt-grid">
+      <article class="fcard" data-reveal>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-3v10l-6-3"/></svg>
+        <span class="pin">Zoom · 3 раза в неделю</span>
+        <h3>Живые встречи</h3>
+        <p>По понедельникам, средам и пятницам. Длительность встречи — 1.5–2 часа. Лекция + сразу практика на твоих задачах.</p>
+      </article>
+      <article class="fcard" data-reveal>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-5A8.4 8.4 0 1 1 21 11.5Z"/></svg>
+        <span class="pin">Telegram‑чат группы</span>
+        <h3>Чат на 10 человек</h3>
+        <p>Личный чат для 10 человек. Голосовые от меня в любое время дня. Разборы домашек, обмен опытом, чисто рабочая атмосфера.</p>
+      </article>
+      <article class="fcard" data-reveal>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span class="pin">1 на 1</span>
+        <h3>Личные сессии по запросу</h3>
+        <p>Если что‑то не получается лично у тебя — пишешь, договариваемся, разбираем один на один. Без доп. оплаты.</p>
+      </article>
+      <article class="fcard" data-reveal>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/><path d="m4 4 3 3"/></svg>
+        <span class="pin">Намеренно</span>
+        <h3>Без записей</h3>
+        <p>Я не делаю записи зумов. Это намеренно: чтобы все были на встречах, а не «потом посмотрю в записи и забуду».</p>
+      </article>
+      <article class="fcard" data-reveal>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18"/><path d="M5 8c0-2 2-3 7-3s7 1 7 3"/><path d="M5 8v8c0 2 2 3 7 3s7-1 7-3V8"/></svg>
+        <span class="pin">3 недели + 1</span>
+        <h3>Неделя поддержки</h3>
+        <p>После трёх недель интенсива — неделя, чтобы догнать, доделать проекты и закрепить. Я рядом: разборы, подсказки, личные сессии.</p>
+      </article>
+      <article class="fcard" data-reveal>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16"/><path d="M4 12h10"/><path d="M4 17h7"/><path d="m17 14 3 3-3 3"/></svg>
+        <span class="pin">Забираешь с собой</span>
+        <h3>Промпты и связки</h3>
+        <p>Все рабочие промпты, формулы и пайплайны, которые я использую сам, остаются у тебя — сразу в работу.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 09 · AUTHOR (dark) ===================== -->
+<section class="sec sec--dark auth" id="author">
+  <div class="wrap">
+    <span class="eyebrow" data-reveal><span class="idx">09</span> об авторе</span>
+    <h2 class="h1" data-reveal>Кто будет тебя учить</h2>
+    <div class="auth-grid">
+      <div class="auth-photo" data-reveal="left">
+        <img src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780937857/WhatsApp_Image_2026-06-08_at_21.54.34_kejf5r.jpg" alt="Данила Ким — режиссёр ИИ‑контента" />
+        <div class="auth-cap">
+          <div class="nm">Данила Ким</div>
+          <div class="role">Режиссёр ИИ‑контента, наставник</div>
+        </div>
+      </div>
+      <div class="auth-bio" data-reveal="right">
+        <p class="quote">«Я не просто жму кнопки — я знаю, как продавать, как думает рынок и как строится кадр.»</p>
+        <p>За плечами — годы в продажах и маркетинге и опыт в фотографии. Поэтому я смотрю на ИИ‑контент не как на «генерилку картинок», а как на инструмент, который продаёт и попадает в аудиторию. Сегодня работаю как режиссёр ИИ‑контента — ставлю задачу, делаю промпты, режу, собираю. Без команды, без съёмочной группы, без бюджета — только инструменты и понимание того, как они работают вместе. Это и есть навык, которому хочу научить.</p>
+        <div class="auth-cases">
+          <div class="ac-logos">
+            <img class="client" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780830373/client-tass.png_k6r0pr.png" alt="ТАСС" />
+            <img class="client" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780830373/client-tassay_smryug.png" alt="Tassay" />
+            <img class="client" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780830372/client-indomie_owwnci.png" alt="Indomie" />
+          </div>
+          <a class="ig-link" href="https://instagram.com/danyaproai" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            @danyaproai · смотреть портфолио
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 10 · PRICING ===================== -->
+<section class="sec pricing" id="pricing">
+  <div class="wrap">
+    <span class="eyebrow" data-reveal style="justify-content:center"><span class="idx">10</span> стоимость и экономика</span>
+    <h2 class="h1 price-head no-cap" data-reveal>300 000 ₸ за 3 недели интенсива + неделя поддержки</h2>
+    <div class="price-amount" data-reveal>300 000 <span class="cur">₸</span></div>
+    <p class="price-sub" data-reveal>≈ $600 · ≈ ₽48 000 — живое обучение напрямую у автора, в группе из 10 человек.</p>
+
+    <ul class="incl" data-reveal>
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></span>9 живых уроков в Zoom</li>
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></span>Личный чат группы в Telegram</li>
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></span>Разборы домашек лично от меня</li>
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></span>Личные сессии по запросу</li>
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></span>Неделя поддержки после интенсива</li>
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></span>Все промпты и связки автора — забираешь с собой</li>
+    </ul>
+
+    <div class="econ">
+      <div class="ecard them" data-reveal="left">
+        <span class="et">Другие — предзаписанные</span>
+        <div class="ep">350–500 тыс ₸</div>
+        <p>≈ $700–1000 · ≈ ₽56–80 тыс. Запись (~2025), куратор на 300+ студентов. И <b>не говорят</b>, сколько ещё заложить на токены и практику — а это ещё ~100 000 ₸.</p>
+        <div class="total">Реально выходит: <b>450–600 тыс ₸</b> — и без живого разбора</div>
+      </div>
+      <div class="ecard us" data-reveal="right">
+        <span class="ribbon">честно</span>
+        <span class="et">Живое обучение DANYA PROAI</span>
+        <div class="ep">300 тыс ₸</div>
+        <p>Обучение — 300 000 ₸ ($600 · ₽48 000). Практику честно считаем отдельно: Higgsfield ~90 000 ₸ ($200), GPT ~10 000 ₸ ($20). Токены не зашиты в цену — докупаешь сам и видишь, за что платишь.</p>
+        <div class="total">Итого с практикой: <b>~400 000 ₸</b> ($820 · ₽66 000) — живое обучение и всё прозрачно заранее</div>
+      </div>
+    </div>
+
+    <div class="price-cta" data-reveal>
+      <a href="#apply" class="btn btn--primary btn--lg" data-scroll>Оставить заявку <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 11 · FAQ ===================== -->
+<section class="sec sec--paper-soft faq" id="faq">
+  <div class="wrap">
+    <div class="faq-grid">
+      <div>
+        <span class="eyebrow" data-reveal><span class="idx">11</span> faq</span>
+        <h2 class="h1" data-reveal>Частые<br>вопросы</h2>
+      </div>
+      <div class="faq-list" data-reveal>
+        <div class="faq-item">
+          <button class="faq-q">Я никогда не пользовался ИИ‑инструментами. Подойдёт ли мне обучение?<span class="pm"></span></button>
+          <div class="faq-a"><div class="inner">Да, если у тебя есть базовый опыт работы с GPT (любая версия). Обучение с нуля, но не «что такое искусственный интеллект» — а «как сделать рабочий промпт за 10 минут». Если ты вообще не открывал ChatGPT — лучше сначала освоить базу, потом приходить.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">А если я не успеваю? Запись будет?<span class="pm"></span></button>
+          <div class="faq-a"><div class="inner">Записей зумов нет — это намеренно. Если пропустил по уважительной причине — догоняем в последнюю неделю курса (она специально оставлена под отстающих) и на личной сессии один на один. Если ты не готов к регулярности — это не твой формат, лучше выбери записанный курс.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Какие технические требования? Что нужно иметь?<span class="pm"></span></button>
+          <div class="faq-a"><div class="inner">Компьютер с интернетом, аккаунт ChatGPT (платный или бесплатный — на старте хватит). Higgsfield, Midjourney и другие платные инструменты ты решишь сам, нужны ли тебе — 6000 токенов Higgsfield в подарок хватит на обучение и первый месяц практики.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">А что если мне не зайдёт?<span class="pm"></span></button>
+          <div class="faq-a"><div class="inner">Я не даю гарантий результата — потому что результат зависит от тебя. Но если в первые 3 дня обучения ты понимаешь, что формат не твой — возвращаю 100% стоимости. После — никаких возвратов: мы зашли в работу, я выделил тебе слот в группе из 10 человек.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Можно ли заплатить в рассрочку?<span class="pm"></span></button>
+          <div class="faq-a"><div class="inner">Да, обсудим на созвоне перед оплатой. Стандартно 2 платежа: 150к перед стартом, 150к в середине обучения.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Когда следующий поток?<span class="pm"></span></button>
+          <div class="faq-a"><div class="inner">Расскажу на созвоне — даты формируются под группу, которая набралась. Оставляй заявку, договоримся.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 12 · FINAL CTA (dark) ===================== -->
+<section class="sec sec--dark final" id="apply">
+  <div class="wrap">
+    <div class="door-wrap">
+      <img class="door-img" id="door" src="https://res.cloudinary.com/dmseql7fv/image/upload/q_auto/f_auto/v1780829726/origami-door.png_dv2xjj.png" alt="Дверь, открывающаяся в свет" data-reveal="scale" />
+    </div>
+    <div class="final-head">
+      <h2 class="no-cap" data-reveal>Готов?</h2>
+      <p data-reveal>Оставь заявку — я лично созвонюсь с тобой перед оплатой. Расскажу про ближайший поток, отвечу на вопросы, поймём, подходим ли друг другу.</p>
+    </div>
+
+    <form class="form" id="applicationForm" novalidate data-reveal>
+      <div class="field">
+        <label for="name">Имя и фамилия *</label>
+        <input type="text" id="name" name="name" required autocomplete="name" placeholder="Данила Ким" />
+        <span class="err">Введите имя и фамилию</span>
+      </div>
+      <div class="field row">
+        <div class="field">
+          <label for="age">Возраст *</label>
+          <input type="number" id="age" name="age" required min="18" max="99" inputmode="numeric" placeholder="28" />
+          <span class="err">Возраст от 18 до 99</span>
+        </div>
+        <div class="field">
+          <label for="whatsapp">Номер WhatsApp *</label>
+          <input type="tel" id="whatsapp" name="whatsapp" required autocomplete="tel" inputmode="tel" placeholder="+7 700 000 00 00" />
+          <span class="err">Введите корректный номер</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="comment">В какое время удобно созвониться?</label>
+        <textarea id="comment" name="comment" rows="3" placeholder="Например: вечером после 19:00, по будням"></textarea>
+      </div>
+      <button type="submit" class="btn btn--primary btn--lg" id="submitBtn">Отправить заявку <span class="arr">→</span></button>
+      <p class="form-note">Я свяжусь с тобой в течение 24 часов в WhatsApp. Без спама, без рассылок — только наш с тобой разговор.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">DANYA<br><span class="accent-text">PROAI</span></div>
+      <div class="foot-links">
+        <a href="#program" data-scroll>Программа</a>
+        <a href="#author" data-scroll>Об авторе</a>
+        <a href="#pricing" data-scroll>Стоимость</a>
+        <a href="#faq" data-scroll>FAQ</a>
+        <a href="#apply" data-scroll>Заявка</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 DANYA PROAI · Живое обучение ИИ‑контенту</span>
+      <span>ИИ‑инструменты — это новая кисть.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- sticky CTA + toast -->
+<a href="#apply" class="btn btn--primary sticky-cta" id="stickyCta" data-scroll>Оставить заявку <span class="arr">→</span></a>
+<div class="toast" id="toast"></div>
+
+<!-- ===================== LIBRARIES ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const TELEGRAM_BOT_TOKEN = '8613996708:AAHECY9n02FPsEoSHEY2e-93mM5FIMCvCyk';
+const TELEGRAM_CHAT_ID   = '797275290';
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = () => window.matchMedia('(max-width: 1040px)').matches;
+const hasGSAP = typeof gsap !== 'undefined';
+
+/* всегда стартуем с верха — иначе восстановление скролла «залипает» на середине прогорания */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0,0);
+window.addEventListener('beforeunload', ()=>{ try{ window.scrollTo(0,0); }catch(e){} });
+
+/* ============================================================
+   SMOOTH SCROLL (Lenis) + GSAP sync
+   ============================================================ */
+let lenis = null;
+if (typeof Lenis !== 'undefined' && !reduceMotion) {
+  lenis = new Lenis({ duration: 1.1, lerp: 0.09, smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.6 });
+  window.lenis = lenis;
+  lenis.scrollTo(0,{immediate:true});
+  if (hasGSAP && gsap.ticker) {
+    lenis.on('scroll', () => { if (window.ScrollTrigger) ScrollTrigger.update(); });
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+  }
+}
+function scrollToTarget(target){
+  const el = typeof target === 'string' ? document.querySelector(target) : target;
+  if (!el) return;
+  if (lenis) lenis.scrollTo(el, { offset: -64 });
+  else el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+
+/* anchor links */
+document.querySelectorAll('[data-scroll]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id && id.startsWith('#')) {
+      e.preventDefault();
+      closeMenu();
+      scrollToTarget(id);
+    }
+  });
+});
+
+if (hasGSAP && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+(function(){
+  const dot = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || window.matchMedia('(hover:none)').matches) return;
+  let mx=0,my=0,rx=0,ry=0, ringRunning=false;
+  function ringLoop(){ rx+=(mx-rx)*0.18; ry+=(my-ry)*0.18;
+    ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+    if(Math.abs(mx-rx)<0.4 && Math.abs(my-ry)<0.4){ ringRunning=false; return; }  // догнало → стоп
+    requestAnimationFrame(ringLoop); }
+  window.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    if(!ringRunning){ ringRunning=true; requestAnimationFrame(ringLoop); }
+  });
+  document.querySelectorAll('a,button,.faq-q,.scard,.pcard,.fcard,input,textarea').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+  });
+})();
+
+/* ============================================================
+   SCROLL PROGRESS + NAV state
+   ============================================================ */
+(function(){
+  const bar = document.getElementById('progress');
+  const nav = document.getElementById('nav');
+  const sticky = document.getElementById('stickyCta');
+  let lastY = 0;
+  function onScroll(y){
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = `scaleX(${h>0 ? y/h : 0})`;
+    nav.classList.toggle('scrolled', y > 40);
+    if (y > lastY && y > 600) nav.classList.add('hide'); else nav.classList.remove('hide');
+    // на мобиле sticky-кнопка выезжает сразу при начале скролла (в hero её нет); на десктопе — после первого экрана
+    const stickyTh = window.matchMedia('(max-width:760px)').matches ? 60 : window.innerHeight * 0.9;
+    sticky.classList.toggle('show', y > stickyTh);
+    lastY = y;
+  }
+  if (lenis) lenis.on('scroll', ({scroll}) => onScroll(scroll));
+  else window.addEventListener('scroll', () => onScroll(window.scrollY), {passive:true});
+  onScroll(0);
+})();
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+const burger = document.getElementById('burger');
+const menu = document.getElementById('menu');
+function closeMenu(){ menu.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); if(lenis) lenis.start(); }
+function openMenu(){ menu.classList.add('open'); burger.classList.add('open'); burger.setAttribute('aria-expanded','true'); if(lenis) lenis.stop(); }
+burger.addEventListener('click', ()=> menu.classList.contains('open') ? closeMenu() : openMenu());
+
+/* ============================================================
+   COUNTDOWN — обратный отсчёт до старта потока (15 июня)
+   ============================================================ */
+(function(){
+  const dEl=document.getElementById('cdDays'), hEl=document.getElementById('cdHours'),
+        mEl=document.getElementById('cdMins'), sEl=document.getElementById('cdSecs');
+  if(!dEl) return;
+  const target=new Date('2026-06-15T00:00:00').getTime();   // старт потока
+  const pad=n=>String(n).padStart(2,'0');
+  function tick(){
+    let diff=target-Date.now(); if(diff<0) diff=0;
+    dEl.textContent=pad(Math.floor(diff/86400000));
+    hEl.textContent=pad(Math.floor(diff%86400000/3600000));
+    mEl.textContent=pad(Math.floor(diff%3600000/60000));
+    sEl.textContent=pad(Math.floor(diff%60000/1000));
+  }
+  tick(); setInterval(tick,1000);
+})();
+
+/* ============================================================
+   HERO — title reveal + parallax
+   ============================================================ */
+(function(){
+  const scene=document.getElementById('heroScene');
+  const ember=document.getElementById('ember');
+  const sky=document.getElementById('sky');
+  const m=document.getElementById('figMaster');
+  const s=document.getElementById('figStudent');
+  const spark=document.getElementById('spark');
+  const copy=document.querySelector('.hero-copy');
+  const foot=document.getElementById('heroFoot');
+  const more=document.getElementById('heroMore');
+  const title=document.getElementById('heroTitle');
+
+  // intro
+  if (hasGSAP && !reduceMotion){
+    gsap.from('.hero-copy .eyebrow',{opacity:0,y:16,duration:.8,ease:'power3.out',delay:.15});
+    gsap.from(title,{opacity:0,y:26,duration:1,ease:'power3.out',delay:.3});
+    gsap.from(foot,{opacity:0,y:20,duration:1,ease:'power3.out',delay:.7});
+    gsap.from([m,s],{opacity:0,scale:1.04,duration:1.5,ease:'power3.out',stagger:.12,delay:.1});
+  }
+
+  // ---- mouse parallax на персонажах (rAF работает ТОЛЬКО когда мышь движется и hero в зоне видимости) ----
+  if (!window.matchMedia('(hover:none)').matches && !reduceMotion){
+    let tx=0,ty=0,cx=0,cy=0, running=false, visible=true;
+    const clouds=document.getElementById('clouds');
+    const lines=document.getElementById('frescoLines');
+    function frame(){
+      cx+=(tx-cx)*0.07; cy+=(ty-cy)*0.07;
+      if(sky){ sky.style.setProperty('--sx',(-cx*9)+'px');  sky.style.setProperty('--sy',(-cy*7)+'px'); }
+      if(lines){ lines.style.setProperty('--llx',(cx*7)+'px'); lines.style.setProperty('--lly',(cy*5)+'px'); }
+      if(clouds){ clouds.style.setProperty('--clx',(-cx*20)+'px'); clouds.style.setProperty('--cly',(-cy*15)+'px'); }
+      if(s){ s.style.setProperty('--px',(-cx*30)+'px'); s.style.setProperty('--py',(-cy*22)+'px'); }
+      if(m){ m.style.setProperty('--px',(-cx*38)+'px'); m.style.setProperty('--py',(-cy*28)+'px'); }
+      if(Math.abs(tx-cx)<0.0006 && Math.abs(ty-cy)<0.0006){ running=false; return; }  // замерло → стоп
+      requestAnimationFrame(frame);
+    }
+    function start(){ if(!running && visible){ running=true; requestAnimationFrame(frame); } }
+    window.addEventListener('pointermove',e=>{ tx=e.clientX/innerWidth-0.5; ty=e.clientY/innerHeight-0.5; start(); },{passive:true});
+    const heroEl=document.getElementById('hero');
+    if(heroEl && 'IntersectionObserver' in window){
+      new IntersectionObserver(es=>{ visible=es[0].isIntersecting; if(visible) start(); },{threshold:0}).observe(heroEl);
+    }
+  }
+
+  if (reduceMotion || !hasGSAP || !window.ScrollTrigger){
+    if (hasGSAP){ gsap.set([m,s],{xPercent:0}); }
+    return;
+  }
+
+  const mobile = isMobile();
+  gsap.set([m,s],{xPercent:0});
+
+  const heroFront=document.getElementById('heroBurn');
+
+  // ===== ЖЁСТКАЯ ГЕОМЕТРИЯ HERO В ПИКСЕЛЯХ =====
+  // iOS Safari иначе трактует vh/vw/aspect-ratio → задаём всё реальными px по фактическому экрану.
+  const revealImg=document.querySelector('.reveal-img');
+  const frescoEl=document.querySelector('.fresco');
+  function sizeHeroMobile(){
+    if(!window.matchMedia('(max-width:760px)').matches){
+      [frescoEl,revealImg,more,heroFront,ember].forEach(el=>{ if(!el) return;
+        ['height','top','bottom','clip-path','clipPath'].forEach(p=>el.style.removeProperty(p)); });
+      return;
+    }
+    const W=scene.clientWidth, H=scene.clientHeight;
+    const top=Math.round(H*0.37);          // верх кадра = 37% реальной высоты сцены
+    const frescoBottom=top+W;              // кадр-квадрат 1:1 (высота = ширине)
+    const rh=Math.round(W*4/3);            // подложка строго 3:4
+    const revTop=frescoBottom-rh;          // низ подложки = низ кадра, тянется вверх
+    if(frescoEl){ frescoEl.style.top=top+'px'; frescoEl.style.height=W+'px'; }
+    if(revealImg){ revealImg.style.top=revTop+'px'; revealImg.style.bottom='auto'; revealImg.style.height=rh+'px'; }
+    const clip='inset(0 0 '+(H-frescoBottom)+'px 0)';   // прожиг/кромка не ниже низа кадра
+    if(heroFront) heroFront.style.clipPath=clip;
+    if(ember) ember.style.clipPath=clip;
+    if(more){ more.style.bottom=(H-revTop+12)+'px'; more.style.top='auto'; }   // подпись в бежевом поле над подложкой
+  }
+  sizeHeroMobile();
+
+  // контакт рук = центр прогорания, в координатах полноэкранной сцены (фреска 21:9 по центру)
+  function geo(){
+    const sc=scene.getBoundingClientRect(); const W=sc.width, H=sc.height;
+    const frEl=document.querySelector('.fresco'); const fr=frEl?frEl.getBoundingClientRect():sc;
+    const cs=getComputedStyle(scene);
+    const rx=parseFloat(cs.getPropertyValue('--burn-cx'))||0.545;   // точка контакта рук (доля кадра), переопределяется на мобиле
+    const ry=parseFloat(cs.getPropertyValue('--burn-cy'))||0.558;
+    const cx=(fr.left-sc.left)+fr.width*rx;
+    const cy=(fr.top-sc.top)+fr.height*ry;
+    const maxR=Math.hypot(Math.max(cx,W-cx),Math.max(cy,H-cy))*1.08;   // до дальнего угла + запас → выходит за рамку кадра
+    return {cx,cy,W,H,maxR};
+  }
+  let G=geo();
+  function applyCenter(){ scene.style.setProperty('--cx',(G.cx/G.W*100)+'%'); scene.style.setProperty('--cy',(G.cy/G.H*100)+'%'); }
+  const burnState={v:0};   // 0..1 progress of the burn
+  // КРОСС-БРАУЗЕРНО: маска и кромка задаются инлайном radial-gradient каждый кадр (работает в Safari/Chrome)
+  function setBurn(){
+    const v=burnState.v, cx=G.cx, cy=G.cy, br=v*G.maxR;
+    const burning = v>0.004;
+    scene.classList.toggle('is-burning', burning);
+    if(burning){
+      const hole=Math.max(0,br-14);
+      const grad='radial-gradient(circle at '+cx+'px '+cy+'px, rgba(0,0,0,0) '+hole+'px, #fff '+br+'px)';
+      heroFront.style.webkitMaskImage=grad; heroFront.style.maskImage=grad;
+      heroFront.style.webkitMaskRepeat='no-repeat'; heroFront.style.maskRepeat='no-repeat';
+      if(ember){
+        ember.style.background='radial-gradient(circle at '+cx+'px '+cy+'px, rgba(0,0,0,0) '+Math.max(0,br-40)+'px, rgba(255,140,35,.6) '+Math.max(0,br-14)+'px, #eaff9b '+br+'px, rgba(200,255,62,.5) '+(br+6)+'px, rgba(0,0,0,0) '+(br+28)+'px)';
+        ember.style.opacity = v<0.78 ? Math.min(1, v/0.18) : Math.max(0,(1-v)/0.22);
+      }
+    } else {
+      heroFront.style.webkitMaskImage=''; heroFront.style.maskImage='';
+      if(ember) ember.style.opacity=0;
+    }
+  }
+  applyCenter();
+  window.addEventListener('resize',()=>{ sizeHeroMobile(); G=geo(); applyCenter(); setBurn(); });
+  window.addEventListener('orientationchange',()=>{ setTimeout(()=>{ sizeHeroMobile(); G=geo(); applyCenter(); setBurn(); if(window.ScrollTrigger) ScrollTrigger.refresh(); },120); });
+  if(window.ScrollTrigger) ScrollTrigger.addEventListener('refreshInit',()=>{ sizeHeroMobile(); G=geo(); applyCenter(); setBurn(); });
+  setBurn();
+
+  const tl = gsap.timeline({
+    scrollTrigger:{ trigger:'.hero', start:'top top',
+      end:()=>'+='+Math.round(window.innerHeight*(mobile?1.9:2.5)),
+      scrub:0.6, pin:true, anticipatePin:1, invalidateOnRefresh:true }
+  });
+  window.__heroTL = tl;
+  tl
+    // 1) фигуры слегка разъезжаются
+    .to(m,{xPercent: mobile?-12:-16,ease:'power1.out'},0)
+    .to(s,{xPercent: mobile?12:16,ease:'power1.out'},0)
+    // 2) сходятся обратно — руки соприкасаются
+    .to(m,{xPercent:0,ease:'power2.inOut'},0.26)
+    .to(s,{xPercent:0,ease:'power2.inOut'},0.26)
+    .to(copy,{yPercent:-40,opacity:0,ease:'power1.in'},0.10)
+    // 3) вспышка в точке касания (появляется и тут же гаснет в частицы)
+    .to(foot,{opacity:0,ease:'power1.in',duration:0.2},0.40)
+    .to(spark,{scale:1,opacity:1,ease:'power2.out',duration:0.12},0.42)
+    .to(spark,{scale:2.4,opacity:0,ease:'power1.in',duration:0.18},0.54)
+    // 4) прогорание из центра — круг выходит ЗА рамку 21:9 и собирает полноэкранную подложку
+    //    (прозрачность кромки-тления управляется внутри setBurn и гаснет в 0 при v=1)
+    .to(burnState,{v:1,ease:'power1.inOut',duration:0.36,onUpdate:setBurn},0.50)
+    .set(spark,{opacity:0},0.74)
+    // 5) дальше при скролле — зум В ЛИЦА персонажей (origin сцены = лица)
+    .to(scene,{scale:1.5,ease:'none',duration:0.14},0.86)
+    // 6) указатель «подробнее ↓» — появляется раньше (как раскрылась сцена) и держится до конца
+    .to(more,{opacity:1,ease:'power1.out',duration:0.1},0.66);
+})();
+
+/* ============================================================
+   GENERIC REVEALS
+   ============================================================ */
+(function(){
+  const items = document.querySelectorAll('[data-reveal]:not(.hero-copy [data-reveal])');
+  if (reduceMotion){ items.forEach(i=>i.classList.add('in')); return; }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+  items.forEach(i=> io.observe(i));
+
+  // section heading line masks
+  document.querySelectorAll('.sec h2.h1').forEach(h=> h.classList.add('reveal-lines-host'));
+})();
+
+/* ============================================================
+   INTERACTIVE TEXT — пословный reveal заголовков и абзацев + подсветка акцентов
+   (blur-in + подъём со stagger, разово, на GPU; eyebrow-линии и акценты — через CSS)
+   ============================================================ */
+(function(){
+  if (reduceMotion || !hasGSAP) return;
+  const data=new Map();   // el -> {words, stagger}
+  // делит текст на слова, СОХРАНЯЯ вложенные спаны (accent-text), <br>
+  function arm(el, opt){
+    const tmp=document.createElement('span'); const out=[];
+    (function walk(node, box){
+      [...node.childNodes].forEach(ch=>{
+        if (ch.nodeType===3){
+          ch.textContent.split(/(\s+)/).forEach(p=>{
+            if (p==='') return;
+            if (/^\s+$/.test(p)) box.appendChild(document.createTextNode(p));
+            else { const w=document.createElement('span'); w.className='w'; w.textContent=p; box.appendChild(w); out.push(w); }
+          });
+        } else if (ch.nodeName==='BR'){ box.appendChild(ch.cloneNode()); }
+        else if (ch.nodeType===1){ const c=ch.cloneNode(false); box.appendChild(c); walk(ch,c); }
+      });
+    })(el, tmp);
+    if (!out.length) return;
+    el.textContent=''; while(tmp.firstChild) el.appendChild(tmp.firstChild);
+    // буквица: первую букву первого слова — в .cap-letter (::first-letter не достаёт сквозь inline-block .w)
+    if (opt.cap && out[0]){
+      const fw=out[0], t=fw.textContent;
+      if (t){ fw.textContent=''; const c=document.createElement('span'); c.className='cap-letter'; c.textContent=t[0];
+        fw.appendChild(c); if (t.length>1) fw.appendChild(document.createTextNode(t.slice(1))); }
+    }
+    el.classList.add('in');                                 // контейнер виден сразу, анимируют слова
+    gsap.set(out, {yPercent:opt.yp, opacity:0, filter:'blur('+opt.blur+'px)'});
+    data.set(el, {words:out, stagger:opt.st});
+  }
+  // заголовки секций — с рукописной буквицей
+  document.querySelectorAll('.sec h2').forEach(h=> arm(h, {cap:!h.classList.contains('no-cap'), yp:55, blur:7, st:.042}));
+  // крупные абзацы-утверждения и лиды — пословно (дропкап-буквица где есть)
+  document.querySelectorAll('.pain-thesis, .proof-note, .lead').forEach(p=> arm(p, {cap:p.classList.contains('dropcap'), yp:42, blur:4, st:.02}));
+
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(en=>{
+      if (!en.isIntersecting) return; const d=data.get(en.target); if(!d) return;
+      en.target.classList.add('txt-in');                    // запускает подсветку акцентов (CSS)
+      gsap.to(d.words, {yPercent:0, opacity:1, filter:'blur(0px)', duration:.7, ease:'power3.out', stagger:d.stagger,
+        onComplete(){ d.words.forEach(w=> w.style.filter=''); }});
+      io.unobserve(en.target);
+    });
+  }, {threshold:.16, rootMargin:'0px 0px -8% 0px'});
+  data.forEach((_,el)=> io.observe(el));
+})();
+
+/* ============================================================
+   COUNTERS
+   ============================================================ */
+(function(){
+  const counters = document.querySelectorAll('.counter');
+  const run = (el)=>{
+    const to = parseInt(el.dataset.to,10); const dur = 1200; const t0 = performance.now();
+    const tick = (t)=>{ const p = Math.min((t-t0)/dur,1); const e = 1-Math.pow(1-p,3);
+      el.textContent = Math.round(to*e); if(p<1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  };
+  const io = new IntersectionObserver((es)=>es.forEach(en=>{ if(en.isIntersecting){ run(en.target); io.unobserve(en.target);} }),{threshold:.6});
+  counters.forEach(c=> reduceMotion ? c.textContent=c.dataset.to : io.observe(c));
+})();
+
+/* ============================================================
+   SCALES tilt / STACK / DOOR scroll choreography
+   ============================================================ */
+(function(){
+  if (!hasGSAP || !window.ScrollTrigger || reduceMotion) return;
+
+  const scales = document.getElementById('scales');
+  if (scales) gsap.fromTo(scales, { rotate:-7, y:30 }, {
+    rotate:3, y:-20, ease:'none',
+    scrollTrigger:{ trigger:'.diff', start:'top 80%', end:'bottom top', scrub:1 }
+  });
+
+  // PROGRAM — pinned horizontal scroll (desktop only; mobile uses native swipe)
+  const track = document.getElementById('progTrack');
+  const pin = document.getElementById('progPin');
+  const bar = document.getElementById('progBar');
+  if (track && pin && !isMobile()){
+    const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 40);
+    gsap.to(track, {
+      x: () => -distance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pin, start: 'center center',
+        end: () => '+=' + (distance() + window.innerHeight * 0.6),
+        scrub: 0.6, pin: true, anticipatePin: 1, invalidateOnRefresh: true,
+        onUpdate: self => { if (bar) bar.style.width = (self.progress * 100).toFixed(1) + '%'; }
+      }
+    });
+    // intro stack gentle float as it enters
+    const stack = document.getElementById('stack');
+    if (stack) gsap.from(stack, { y:40, opacity:0, duration:1, ease:'power3.out',
+      scrollTrigger:{ trigger:'.prog-intro', start:'top 70%' } });
+  }
+
+  const door = document.getElementById('door');
+  if (door) gsap.fromTo(door, { scale:.82, rotateY:0, filter:'drop-shadow(0 30px 40px rgba(200,255,62,0))' }, {
+    scale:1.04, ease:'power2.out',
+    scrollTrigger:{ trigger:'.final', start:'top 75%', end:'center center', scrub:1 }
+  });
+})();
+
+/* ============================================================
+   STACK lessons hover nudge already CSS; FAQ accordion
+   ============================================================ */
+(function(){
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', ()=>{
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o=>{
+        if(o!==item){ o.classList.remove('open'); o.querySelector('.faq-a').style.height='0px'; }
+      });
+      if (open){ item.classList.remove('open'); a.style.height='0px'; }
+      else { item.classList.add('open'); a.style.height = a.firstElementChild.offsetHeight + 'px'; }
+      if (lenis) setTimeout(()=>lenis.resize&&lenis.resize(), 460);
+    });
+  });
+})();
+
+/* ============================================================
+   MAGNETIC buttons
+   ============================================================ */
+(function(){
+  if (window.matchMedia('(hover:none)').matches) return;
+  document.querySelectorAll('.btn--primary, .btn--lg').forEach(btn=>{
+    btn.addEventListener('mousemove', e=>{
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      btn.style.transform = `translate(${x*0.18}px, ${y*0.3}px)`;
+    });
+    btn.addEventListener('mouseleave', ()=> btn.style.transform='');
+  });
+})();
+
+/* ============================================================
+   PHONE MASK
+   ============================================================ */
+(function(){
+  const inp = document.getElementById('whatsapp');
+  if (!inp) return;
+  inp.addEventListener('input', ()=>{
+    let v = inp.value.replace(/[^\d+]/g,'');
+    if (!v.startsWith('+')) v = '+' + v.replace(/\+/g,'');
+    const digits = v.slice(1).replace(/\D/g,'').slice(0,15);
+    let out = '+';
+    if (digits.length){
+      out += digits[0];
+      if (digits.length>1) out += ' ' + digits.slice(1,4);
+      if (digits.length>4) out += ' ' + digits.slice(4,7);
+      if (digits.length>7) out += ' ' + digits.slice(7,9);
+      if (digits.length>9) out += ' ' + digits.slice(9,11);
+      if (digits.length>11) out += ' ' + digits.slice(11);
+    }
+    inp.value = out;
+  });
+})();
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function showToast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type==='error' ? ' error' : '');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=> t.classList.remove('show'), 5000);
+}
+
+/* ============================================================
+   FORM SUBMIT → Telegram
+   ============================================================ */
+(function(){
+  const form = document.getElementById('applicationForm');
+  if (!form) return;
+  const fields = {
+    name: form.name, age: form.age, whatsapp: form.whatsapp
+  };
+  function validate(){
+    let ok = true;
+    const setErr = (input, bad)=>{ input.closest('.field').classList.toggle('invalid', bad); if(bad) ok=false; };
+    setErr(fields.name, fields.name.value.trim().length < 2);
+    const age = parseInt(fields.age.value,10);
+    setErr(fields.age, !(age>=18 && age<=99));
+    const phoneDigits = fields.whatsapp.value.replace(/\D/g,'');
+    setErr(fields.whatsapp, phoneDigits.length < 10);
+    return ok;
+  }
+  Object.values(fields).forEach(f=> f.addEventListener('blur', validate));
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    if (!validate()){
+      const firstBad = form.querySelector('.field.invalid input');
+      if (firstBad) firstBad.focus();
+      return;
+    }
+    const btn = document.getElementById('submitBtn');
+    const original = btn.innerHTML;
+    btn.disabled = true; btn.style.opacity='.7'; btn.textContent = 'Отправляю…';
+
+    const fd = new FormData(form);
+    const msg = `🔥 *Новая заявка — живое обучение DANYA PROAI*\n\n👤 Имя: ${fd.get('name')}\n🎂 Возраст: ${fd.get('age')}\n📱 WhatsApp: ${fd.get('whatsapp')}\n💬 Удобное время: ${fd.get('comment') || 'не указано'}`;
+
+    try{
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode:'Markdown' })
+      });
+      if (res.ok){ showToast('Заявка отправлена. Скоро напишу в WhatsApp.'); form.reset(); }
+      else throw new Error('send failed');
+    }catch(err){
+      showToast('Не получилось отправить. Напиши в Instagram @danyaproai', 'error');
+    }finally{
+      btn.disabled=false; btn.style.opacity=''; btn.innerHTML = original;
+    }
+  });
+})();
+
+/* refresh ScrollTrigger after load (fonts/images) */
+(function(){
+  const toTop=()=>{ window.scrollTo(0,0); if(window.lenis) window.lenis.scrollTo(0,{immediate:true,force:true}); };
+  function forceTop(ms){ const t0=performance.now(); (function f(){ toTop(); if(performance.now()-t0<ms) requestAnimationFrame(f); })(); }
+  window.addEventListener('load', ()=>{
+    if (hasGSAP && window.ScrollTrigger) ScrollTrigger.refresh();
+    forceTop(650);
+    setTimeout(()=>{ if(hasGSAP&&window.ScrollTrigger)ScrollTrigger.refresh(); toTop(); },300);
+  });
+  window.addEventListener('pageshow', e=>{ if(e.persisted) forceTop(400); });
+})();
+
+/* ============================================================
+   HERO TUNE MODE  —  открой превью с #tune, чтобы вручную
+   двигать/крутить фигуры, двигать облака и сдвигать фон (X).
+   Всё считается относительно КАДРА (.fresco) → значения сразу
+   ложатся в мобильный блок CSS. Скопируй блок и пришли мне.
+   ============================================================ */
+(function(){
+  if (!location.hash.toLowerCase().includes('tune')) return;
+  function start(){
+    try{ if(window.__heroTL && window.__heroTL.scrollTrigger) window.__heroTL.scrollTrigger.kill(true); }catch(e){}
+    if(window.lenis) window.lenis.stop();
+    window.scrollTo(0,0);
+    const FRESCO=document.querySelector('.fresco');
+    const M=document.getElementById('figMaster'), S=document.getElementById('figStudent');
+    const C=document.getElementById('clouds'), SKY=document.getElementById('sky');
+    const FX=document.getElementById('heroFx'); if(FX) FX.style.display='none';
+    const WIPE=document.getElementById('heroWipe'); if(WIPE) WIPE.style.display='none';
+    const copy=document.querySelector('.hero-copy'); if(copy) copy.style.pointerEvents='none';
+    const foot=document.getElementById('heroFoot'); if(foot) foot.style.display='none';   // в tune скрываем кнопки — не мешают композиции
+    const sticky=document.querySelector('.sticky-cta'); if(sticky) sticky.style.display='none';
+    const badge=document.querySelector('.hero-badge'); if(badge) badge.style.display='none';
+    if(window.gsap) gsap.set([M,S],{clearProps:'transform,opacity'});
+    const FR=()=>FRESCO.getBoundingClientRect();             // всё относительно кадра-фрески
+    // rotation state per figure (deg), read from --rot
+    const rot={};
+    [M,S].forEach(el=>{ rot[el.id]=parseFloat(getComputedStyle(el).getPropertyValue('--rot'))||0; });
+    // фон (sky) сдвигаем только по X — стартовое значение из object-position (если в %)
+    let skyX=42;
+    try{ const op=getComputedStyle(SKY).objectPosition.split(' ')[0]; if(op.indexOf('%')>-1) skyX=parseFloat(op); }catch(e){}
+    // привязка перетаскиваемых слоёв к px ОТНОСИТЕЛЬНО ФРЕСКИ
+    [M,S,C].forEach(el=>{ const r=el.getBoundingClientRect(), fr=FR();
+      el.style.opacity='1';
+      el.style.left=Math.round(r.left-fr.left)+'px';
+      el.style.top=Math.round(r.top-fr.top)+'px';
+      if(el===C) el.style.bottom='auto';
+      el.style.zIndex='9000'; el.style.pointerEvents='auto'; el.style.cursor='grab'; el.style.touchAction='none';
+    });
+    // ---- панель ----
+    const panel=document.createElement('div');
+    panel.style.cssText='position:fixed;top:10px;left:10px;z-index:99999;background:#0A0A0A;color:#C8FF3E;font:12px/1.4 monospace;padding:12px;border-radius:12px;width:min(300px,calc(100vw - 20px));box-shadow:0 16px 50px rgba(0,0,0,.55)';
+    const head=document.createElement('div');
+    head.style.cssText='display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none';
+    head.innerHTML='<b>🎛 TUNE MODE</b><span style="background:#C8FF3E;color:#0A0A0A;border-radius:6px;padding:0 8px;font-weight:700">— свернуть</span>';
+    const bodyW=document.createElement('div');
+    bodyW.style.cssText='max-height:78vh;overflow:auto;margin-top:8px';
+    bodyW.innerHTML='<span style="color:#9a968b">Тащи фигуры/облака пальцем. Размер, поворот и сдвиг фона — ползунками. Сверни панель, если мешает.</span>';
+    head.onclick=()=>{ bodyW.style.display = bodyW.style.display==='none'?'block':'none';
+      head.querySelector('span').textContent = bodyW.style.display==='none'?'+ развернуть':'— свернуть'; };
+    panel.append(head,bodyW);
+    function slider(label,min,max,val,step,fn){
+      const w=document.createElement('div'); w.style.marginTop='8px';
+      const l=document.createElement('div'); l.textContent=label; l.style.color='#fff';
+      const i=document.createElement('input'); i.type='range'; i.min=min; i.max=max; i.step=step||1; i.value=val; i.style.width='100%';
+      i.oninput=()=>{ fn(parseFloat(i.value)); read(); };
+      w.append(l,i); bodyW.append(w);
+    }
+    const hPct=el=>el.getBoundingClientRect().height/FR().height*100;
+    const wPct=el=>el.getBoundingClientRect().width/FR().width*100;
+    slider('Мастер — размер (% кадра)',30,260,Math.round(hPct(M)),1,v=>M.style.height=v+'%');
+    slider('Мастер — поворот (°)',-90,90,rot[M.id],1,v=>{rot[M.id]=v;M.style.setProperty('--rot',v+'deg');});
+    slider('Ученик — размер (% кадра)',30,260,Math.round(hPct(S)),1,v=>S.style.height=v+'%');
+    slider('Ученик — поворот (°)',-90,90,rot[S.id],1,v=>{rot[S.id]=v;S.style.setProperty('--rot',v+'deg');});
+    slider('Облака — размер (% кадра)',60,260,Math.round(wPct(C)),1,v=>C.style.width=v+'%');
+    slider('Фон (bg) — сдвиг по X (%)',0,100,Math.round(skyX),1,v=>{skyX=v;SKY.style.objectPosition=v+'% 50%';});
+    const ta=document.createElement('textarea');
+    ta.style.cssText='width:100%;height:118px;margin-top:10px;font:11px/1.4 monospace;background:#161616;color:#C8FF3E;border:1px solid #333;border-radius:8px;padding:8px;resize:vertical';
+    ta.readOnly=true; bodyW.append(ta);
+    const btn=document.createElement('button');
+    btn.textContent='📋 Копировать'; btn.style.cssText='margin-top:8px;width:100%;padding:9px;background:#C8FF3E;color:#0A0A0A;border:none;border-radius:8px;font-weight:700;cursor:pointer';
+    btn.onclick=()=>{ ta.select(); document.execCommand('copy'); btn.textContent='✓ Скопировано'; setTimeout(()=>btn.textContent='📋 Копировать',1200); };
+    bodyW.append(btn);
+    document.body.append(panel);
+    const P=(v,b)=>(v/b*100).toFixed(1);
+    function read(){
+      const fr=FR(), m=M.getBoundingClientRect(), s=S.getBoundingClientRect(), c=C.getBoundingClientRect();
+      ta.value=
+        '.fig-master{ left:'+P(m.left-fr.left,fr.width)+'%; top:'+P(m.top-fr.top,fr.height)+'%; height:'+P(m.height,fr.height)+'%; --rot:'+rot[M.id]+'deg }\n'+
+        '.fig-student{ left:'+P(s.left-fr.left,fr.width)+'%; top:'+P(s.top-fr.top,fr.height)+'%; height:'+P(s.height,fr.height)+'%; --rot:'+rot[S.id]+'deg }\n'+
+        '.clouds{ left:'+P(c.left-fr.left,fr.width)+'%; top:'+P(c.top-fr.top,fr.height)+'%; width:'+P(c.width,fr.width)+'%; bottom:auto }\n'+
+        '.sky{ object-position:'+Math.round(skyX)+'% 50% }';
+    }
+    let d=null;
+    const down=(e,el)=>{ d={el,sx:e.clientX,sy:e.clientY,l:parseFloat(el.style.left),t:parseFloat(el.style.top)}; el.style.cursor='grabbing'; e.preventDefault(); };
+    [M,S,C].forEach(el=> el.addEventListener('pointerdown',e=>down(e,el)));
+    window.addEventListener('pointermove',e=>{ if(!d)return; d.el.style.left=(d.l+e.clientX-d.sx)+'px'; d.el.style.top=(d.t+e.clientY-d.sy)+'px'; read(); });
+    window.addEventListener('pointerup',()=>{ if(d){d.el.style.cursor='grab'; d=null;} });
+    read();
+  }
+  if(document.readyState==='complete') setTimeout(start,600);
+  else window.addEventListener('load',()=>setTimeout(start,600));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+serve.py
+.DS_Store
+.claude/
+# в репозиторий — только локальные ассеты, которые реально использует сайт
+assets/*
+!assets/clouds-cut.png
+!assets/tear-edge.png
+!assets/hamilton.otf
