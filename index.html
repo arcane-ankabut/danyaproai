@@ -408,25 +408,6 @@ h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.02;letter-sp
 @keyframes marq{to{transform:translateX(-50%)}}
 
 /* ============================================================
-   COUNTDOWN — обратный отсчёт до старта потока
-   ============================================================ */
-.countdown{background:var(--ink);color:var(--paper);padding:clamp(2rem,5vw,3.4rem) 0;border-block:1px solid var(--line-dark)}
-.cd-wrap{display:flex;align-items:center;justify-content:space-between;gap:clamp(1.4rem,4vw,3rem);flex-wrap:wrap}
-.cd-head .eyebrow{color:var(--paper);opacity:.72}
-.cd-head .eyebrow .idx{color:var(--accent)}
-.cd-date{font-family:var(--f-display);font-weight:900;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1;margin-top:.45rem}
-.cd-timer{display:flex;align-items:flex-start;gap:clamp(.4rem,1.4vw,1rem);font-variant-numeric:tabular-nums}
-.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:clamp(46px,9vw,78px)}
-.cd-num{font-family:var(--f-mono);font-weight:700;font-size:clamp(2rem,7vw,3.5rem);line-height:1;color:var(--accent)}
-.cd-lbl{font-family:var(--f-mono);font-size:clamp(.58rem,1.4vw,.74rem);letter-spacing:.16em;text-transform:uppercase;opacity:.6;margin-top:.45rem}
-.cd-sep{font-family:var(--f-mono);font-weight:700;font-size:clamp(1.5rem,5vw,2.8rem);line-height:1;color:var(--paper);opacity:.28;margin-top:.1em}
-@media (max-width:760px){
-  .cd-wrap{flex-direction:column;align-items:flex-start;gap:1.3rem}
-  .cd-timer{width:100%;justify-content:space-between;gap:.25rem}
-  .cd-unit{min-width:0;flex:1}
-}
-
-/* ============================================================
    PROGRAM — pinned horizontal track
    ============================================================ */
 .prog-intro{margin-bottom:clamp(2rem,4vw,3rem)}
@@ -783,25 +764,6 @@ h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.02;letter-sp
     <span class="vf-reticle"></span>
   </div>
 </header>
-
-<!-- ===================== COUNTDOWN · старт потока ===================== -->
-<section class="countdown" id="countdown" aria-label="Обратный отсчёт до старта потока">
-  <div class="wrap cd-wrap">
-    <div class="cd-head" data-reveal>
-      <span class="eyebrow"><span class="idx">★</span> старт ближайшего потока</span>
-      <div class="cd-date">15 июня</div>
-    </div>
-    <div class="cd-timer" id="cdTimer" role="timer" aria-label="до старта осталось">
-      <div class="cd-unit"><span class="cd-num" id="cdDays">00</span><span class="cd-lbl">дней</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cdHours">00</span><span class="cd-lbl">часов</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cdMins">00</span><span class="cd-lbl">минут</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cdSecs">00</span><span class="cd-lbl">секунд</span></div>
-    </div>
-  </div>
-</section>
 
 <!-- ===================== 02 · SOCIAL PROOF ===================== -->
 <section class="sec proof" id="proof">
@@ -1162,7 +1124,7 @@ h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.02;letter-sp
         </div>
         <div class="faq-item">
           <button class="faq-q">Когда следующий поток?<span class="pm"></span></button>
-          <div class="faq-a"><div class="inner">Старт — 15 июня: в этот день проводим первый урок. Оставляй заявку и забирай место в группе, пока оно есть.</div></div>
+          <div class="faq-a"><div class="inner">Точную дату старта называю на созвоне — ориентируюсь под группу, которая набирается. Оставляй заявку, и мы всё обсудим: когда стартуем и как тебе будет удобно.</div></div>
         </div>
       </div>
     </div>
@@ -1345,25 +1307,6 @@ const menu = document.getElementById('menu');
 function closeMenu(){ menu.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); if(lenis) lenis.start(); }
 function openMenu(){ menu.classList.add('open'); burger.classList.add('open'); burger.setAttribute('aria-expanded','true'); if(lenis) lenis.stop(); }
 burger.addEventListener('click', ()=> menu.classList.contains('open') ? closeMenu() : openMenu());
-
-/* ============================================================
-   COUNTDOWN — обратный отсчёт до старта потока (15 июня)
-   ============================================================ */
-(function(){
-  const dEl=document.getElementById('cdDays'), hEl=document.getElementById('cdHours'),
-        mEl=document.getElementById('cdMins'), sEl=document.getElementById('cdSecs');
-  if(!dEl) return;
-  const target=new Date('2026-06-15T00:00:00').getTime();   // старт потока
-  const pad=n=>String(n).padStart(2,'0');
-  function tick(){
-    let diff=target-Date.now(); if(diff<0) diff=0;
-    dEl.textContent=pad(Math.floor(diff/86400000));
-    hEl.textContent=pad(Math.floor(diff%86400000/3600000));
-    mEl.textContent=pad(Math.floor(diff%3600000/60000));
-    sEl.textContent=pad(Math.floor(diff%60000/1000));
-  }
-  tick(); setInterval(tick,1000);
-})();
 
 /* ============================================================
    HERO — title reveal + parallax
